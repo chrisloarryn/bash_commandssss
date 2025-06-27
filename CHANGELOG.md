@@ -1,10 +1,31 @@
-## [1.0.1] - 2025-06-27
+# 📝 CHANGELOG
 
-- **fix(cleanup)**: Permission cleanup correction
-### ✨ Feat
-- **feat(scripts)**: Added `auto-commit.sh` script for automatic commits with detailed change analysis
-- **feat(node)**: Added `clean-node-versions.sh` script to clean Node.js versions and keep only LTS
-- **feat(node)**: Added `clean-node-modules.sh` script to remove all node_modules from the system
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and [Conventional Commits](https://www.conventionalcommits.org/).
+
+---
+
+## [1.0.3] - 2025-06-27
+
+### 🐛 Fixed
+- **fix(core)**: Fixed changelog-manager.sh to prevent corrupted emojis and duplicate separators
+
+---
+
+## [1.0.4] - 2025-06-27
+
+### 🐛 Fixed
+- **fix(core)**: Completely rewrote changelog-manager.sh to fix emoji corruption, syntax errors, and duplicate separators
+- **fix(validation)**: Enhanced changelog validator to reduce false positives with documentation sections
+- **fix(core)**: Improved changelog-manager.sh logic for better entry insertion and structure organization
+- **fix(core)**: Fixed changelog-manager.sh to properly organize CHANGELOG.md structure
+
+### 📚 Documentation
+- **docs(docs)**: Reorganized CHANGELOG.md structure, fixed duplicated sections and improved formatting
+
+---
 
 ## [Unreleased]
 
@@ -13,6 +34,32 @@
 
 ---
 
+## [1.0.1] - 2025-06-27
+
+### 🐛 Fixed
+- **fix(cleanup)**: Permission cleanup correction
+- **fix(docs)**: Complete translation of remaining Spanish text in changelog-manager.sh and clean-node-modules.sh
+
+### ✨ Added
+- **feat(scripts)**: Added `auto-commit.sh` script for automatic commits with detailed change analysis
+- **feat(node)**: Added `clean-node-versions.sh` script to clean Node.js versions and keep only LTS
+- **feat(node)**: Added `clean-node-modules.sh` script to remove all node_modules from the system
+
+---
+
+## [1.0.0] - 2025-06-27
+
+### ✨ Added
+- **feat(core)**: Initial implementation of complete Go and Node.js version management system
+- **feat(go)**: Script `refresh-dev-runtimes.sh` for automatic installation of Go and Node.js LTS
+- **feat(go)**: Script `deep-clean-go.sh` for deep cleanup with special permissions handling
+- **feat(go)**: Script `setup-go-version-manager.sh` for installing 'g' version manager
+- **feat(go)**: Script `go-version-switcher.sh` with advanced interface and colors
+- **feat(docs)**: Complete documentation in `README.md` with detailed technical specifications
+- **feat(docs)**: Practical examples guide in `EXAMPLES.md` with real use cases
+- **feat(docs)**: Quick reference guide in `QUICK-REFERENCE.md`
+- **feat(config)**: Automatic configuration of environment variables (GOPATH, GOROOT, PATH)
+- **feat(compatibility)**: Full support for macOS Intel and Apple Silicon (M1/M2/M3)
 - **feat(compatibility)**: All scripts are now compatible with macOS, Linux and Windows (Git Bash/WSL)
 - **feat(docs)**: Added automated changelog management system with conventional commits
 - **feat(git)**: Smart analysis of change types in commits with automatic categorization
@@ -40,43 +87,6 @@
 - **feat(interactive)**: Interactive mode for individual confirmation
 - **feat(dryrun)**: Dry-run mode to preview changes without executing
 - **feat(performance)**: Use of timeout to avoid infinite searches
-
-### 🌐 Cross-Platform Compatibility
-- **feat(windows)**: Full support for Windows with Git Bash and WSL
-- **feat(macos)**: Specific optimizations for macOS Intel and Apple Silicon
-- **feat(linux)**: Compatibility with major Linux distributions
-- **feat(paths)**: Automatic path detection according to operating system
-- **feat(colors)**: Adaptive color codes for Windows terminals
-
-### 📚 Documentation Updates
-- **docs(examples)**: Added specific examples for each operating system
-- **docs(troubleshooting)**: Expanded multiplatform troubleshooting section
-- **docs(install)**: System-specific installation instructions
-
-# 📝 CHANGELOG
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and [Conventional Commits](https://www.conventionalcommits.org/).
-
----
-
-## [1.0.0] - 2025-06-27
-
-### ✨ Added
-- **feat(core)**: Initial implementation of complete Go and Node.js version management system
-- **feat(go)**: Script `refresh-dev-runtimes.sh` for automatic installation of Go and Node.js LTS
-- **feat(go)**: Script `deep-clean-go.sh` for deep cleanup with special permissions handling
-- **feat(go)**: Script `setup-go-version-manager.sh` for installing 'g' version manager
-- **feat(go)**: Script `go-version-switcher.sh` with advanced interface and colors
-- **feat(docs)**: Complete documentation in `README.md` with detailed technical specifications
-- **feat(docs)**: Practical examples guide in `EXAMPLES.md` with real use cases
-- **feat(docs)**: Quick reference guide in `QUICK-REFERENCE.md`
-- **feat(config)**: Automatic configuration of environment variables (GOPATH, GOROOT, PATH)
-- **feat(compatibility)**: Full support for macOS Intel and Apple Silicon (M1/M2/M3)
-
-### 🔧 Technical Features
 
 #### `refresh-dev-runtimes.sh`
 - **feat(go)**: Automatic detection of Go versions installed with Homebrew using improved regex
@@ -115,6 +125,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **feat(error-handling)**: Robust error handling with return codes
 - **feat(help)**: Complete help system with examples
 
+### 🌐 Cross-Platform Compatibility
+- **feat(windows)**: Full support for Windows with Git Bash and WSL
+- **feat(macos)**: Specific optimizations for macOS Intel and Apple Silicon
+- **feat(linux)**: Compatibility with major Linux distributions
+- **feat(paths)**: Automatic path detection according to operating system
+- **feat(colors)**: Adaptive color codes for Windows terminals
+
 ### 🎨 UX Improvements
 - **feat(ui)**: Consistent use of emojis for better readability
 - **feat(ui)**: Standardized color codes (red=error, green=success, blue=info, yellow=warning)
@@ -122,12 +139,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **feat(progress)**: Progress indicators for long operations
 - **feat(validation)**: Immediate verification of successful installations
 
-### 📚 Documentation
+### 📚 Documentation Updates
+- **docs(examples)**: Added specific examples for each operating system
+- **docs(troubleshooting)**: Expanded multiplatform troubleshooting section
+- **docs(install)**: System-specific installation instructions
 - **docs(readme)**: Complete technical documentation with usage examples
 - **docs(examples)**: 8 practical use cases with executable code
 - **docs(reference)**: Quick reference guide for daily consultation
 - **docs(architecture)**: Directory structure diagrams
-- **docs(troubleshooting)**: Complete troubleshooting section
 - **docs(compatibility)**: Detailed compatibility table
 
 ### 🔐 Security
@@ -197,7 +216,7 @@ We follow [Conventional Commits](https://www.conventionalcommits.org/):
 - **feat(ui)**: Interactive interface for version selection
 - **feat(config)**: Centralized configuration in JSON/YAML file
 
-### [1.0.1] - Pending
+### [1.0.3] - Pending
 - **fix**: Minor fixes based on user feedback
 - **docs**: Documentation improvements based on frequently asked questions
 - **perf**: Speed optimizations in cleanup scripts

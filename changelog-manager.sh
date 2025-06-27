@@ -48,17 +48,17 @@ show_help() {
     echo "  chore     Build or tool changes"
     echo "  security  Security improvements"
     echo ""
-    echo "Scopes válidos:"
+    echo "Valid scopes:"
     echo "  core, go, node, docs, config, ui, install,"
     echo "  cleanup, validation, backup, project"
     echo ""
-    echo "Ejemplos:"
-    echo "  $0 add feat go 'Soporte para Go 1.22'"
-    echo "  $0 add fix cleanup 'Corrección en limpieza de permisos'"
+    echo "Examples:"
+    echo "  $0 add feat go 'Support for Go 1.22'"
+    echo "  $0 add fix cleanup 'Permission cleanup correction'"
     echo "  $0 release 1.1.0"
 }
 
-# Función para validar tipo de commit
+# Function to validate commit type
 validate_type() {
     local type="$1"
     for valid_type in "${VALID_TYPES[@]}"; do
@@ -69,7 +69,7 @@ validate_type() {
     return 1
 }
 
-# Función para validar scope
+# Function to validate scope
 validate_scope() {
     local scope="$1"
     for valid_scope in "${VALID_SCOPES[@]}"; do
@@ -80,7 +80,7 @@ validate_scope() {
     return 1
 }
 
-# Función para obtener la version current
+# Function to get current version
 get_current_version() {
     if [[ -f "$VERSION_FILE" ]]; then
         cat "$VERSION_FILE"
@@ -89,18 +89,18 @@ get_current_version() {
     fi
 }
 
-# Función para guardar version
+# Function to save version
 save_version() {
     local version="$1"
     echo "$version" > "$VERSION_FILE"
 }
 
-# Función para obtener fecha current
+# Function to get current date
 get_date() {
     date +"%Y-%m-%d"
 }
 
-# Función para obtener emoji según el tipo
+# Function to get emoji according to type
 get_type_emoji() {
     local type="$1"
     case "$type" in
@@ -117,178 +117,236 @@ get_type_emoji() {
     esac
 }
 
-# Función para añadir entrada al changelog
+# Function to add entry to changelog
 add_entry() {
     local type="$1"
     local scope="$2"
     local description="$3"
     
-    # Validar tipo
+    # Validate type
     if ! validate_type "$type"; then
-        echo -e "${RED}❌ Error: Tipo '$type' no válido${NC}"
-        echo -e "${YELLOW}Tipos válidos: ${VALID_TYPES[*]}${NC}"
+        echo -e "${RED}❌ Error: Type '$type' not valid${NC}"
+        echo -e "${YELLOW}Valid types: ${VALID_TYPES[*]}${NC}"
         return 1
     fi
     
-    # Validar scope
+    # Validate scope
     if ! validate_scope "$scope"; then
-        echo -e "${RED}❌ Error: Scope '$scope' no válido${NC}"
-        echo -e "${YELLOW}Scopes válidos: ${VALID_SCOPES[*]}${NC}"
+        echo -e "${RED}❌ Error: Scope '$scope' not valid${NC}"
+        echo -e "${YELLOW}Valid scopes: ${VALID_SCOPES[*]}${NC}"
         return 1
     fi
     
-    # Obtener emoji para el tipo
+    # Get emoji for type
     local emoji=$(get_type_emoji "$type")
     
-    # Crear entrada temporal
-    local temp_file=$(mktemp)
+    # Create the entry
     local entry="- **${type}(${scope})**: ${description}"
     
-    echo -e "${BLUE}📝 Añadiendo entrada:${NC}"
+    echo -e "${BLUE}📝 Adding entry:${NC}"
     echo -e "${PURPLE}${emoji} ${entry}${NC}"
     
-    # Leer el changelog current y buscar la sección [Unreleased]
-    if [[ -f "$CHANGELOG_FILE" ]]; then
-        # Buscar si existe sección [Unreleased]
-        if grep -q "\[Unreleased\]" "$CHANGELOG_FILE"; then
-            # Añadir a la sección existente
-            awk -v entry="$entry" '
-            /^### / && !added {
-                print entry
-                added = 1
-            }
-            { print }
-            ' "$CHANGELOG_FILE" > "$temp_file"
-        else
-            # Crear nueva sección [Unreleased]
-            {
-                echo "## [Unreleased]"
-                echo ""
-                echo "### ${emoji} ${type^}"
-                echo "$entry"
-                echo ""
-                if [[ -f "$CHANGELOG_FILE" ]]; then
-                    tail -n +1 "$CHANGELOG_FILE"
-                fi
-            } > "$temp_file"
-        fi
-        
-        mv "$temp_file" "$CHANGELOG_FILE"
-        echo -e "${GREEN}✅ Entrada añadida al changelog${NC}"
-    else
-        echo -e "${RED}❌ Error: No se encontró $CHANGELOG_FILE${NC}"
-        return 1
-    fi
-}
-
-# Función para crear nueva version
-create_release() {
-    local new_version="$1"
-    local current_version=$(get_current_version)
-    local date=$(get_date)
-    
-    echo -e "${BLUE}🚀 Creando release ${new_version}${NC}"
-    
-    # Verificar que existe sección [Unreleased]
-    if ! grep -q "\[Unreleased\]" "$CHANGELOG_FILE"; then
-        echo -e "${YELLOW}⚠️  No hay cambios sin versionar${NC}"
+    # Check if file exists
+    if [[ ! -f "$CHANGELOG_FILE" ]]; then
+        echo -e "${RED}❌ Error: $CHANGELOG_FILE not found${NC}"
         return 1
     fi
     
-    # Crear copia temporal
+    # Create temporary file
     local temp_file=$(mktemp)
     
-    # Reemplazar [Unreleased] con la nueva version
-    sed "s/\[Unreleased\]/[${new_version}] - ${date}/" "$CHANGELOG_FILE" > "$temp_file"
+    # Simple approach: add after the "Pending" line in [Unreleased] section
+    sed "/^### 📝 Pending$/a\\
+$entry" "$CHANGELOG_FILE" > "$temp_file"
     
-    # Añadir nueva sección [Unreleased] al principio
-    {
-        head -n 7 "$temp_file"  # Mantener header
-        echo ""
-        echo "## [Unreleased]"
-        echo ""
-        echo "### 📝 Pendiente"
-        echo "- Próximos cambios aparecerán aquí"
-        echo ""
-        echo "---"
-        echo ""
-        tail -n +8 "$temp_file"  # Resto del file
-    } > "$CHANGELOG_FILE"
-    
-    # Guardar nueva version
-    save_version "$new_version"
-    
-    rm "$temp_file"
-    
-    echo -e "${GREEN}✅ Release ${new_version} created successfully${NC}"
-    echo -e "${BLUE}📅 Fecha: ${date}${NC}"
+    mv "$temp_file" "$CHANGELOG_FILE"
+    echo -e "${GREEN}✅ Entry added to changelog${NC}"
 }
 
-# Función para mostrar la latest version
+# Function to create new release
+create_release() {
+    local new_version="$1"
+    local date=$(get_date)
+    
+    echo -e "${BLUE}🚀 Creating release ${new_version}${NC}"
+    
+    # Verify that [Unreleased] section exists
+    if ! grep -q "## \[Unreleased\]" "$CHANGELOG_FILE"; then
+        echo -e "${YELLOW}⚠️  No unversioned changes${NC}"
+        return 1
+    fi
+    
+    # Create temporary file
+    local temp_file=$(mktemp)
+    
+    # Extract entries from [Unreleased] section and organize them
+    awk -v new_version="$new_version" -v date="$date" '
+    BEGIN {
+        in_unreleased = 0
+        fix_count = 0
+        doc_count = 0 
+        feat_count = 0
+        other_count = 0
+    }
+    
+    # Found [Unreleased] section
+    /^## \[Unreleased\]/ {
+        in_unreleased = 1
+        print "## [" new_version "] - " date
+        print ""
+        next
+    }
+    
+    # Found next version section, stop processing unreleased
+    /^## \[/ && in_unreleased {
+        # Print organized sections
+        if (fix_count > 0) {
+            print "### 🐛 Fixed"
+            for (i = 1; i <= fix_count; i++) {
+                print "- " fixes[i]
+            }
+            print ""
+        }
+        
+        if (doc_count > 0) {
+            print "### 📚 Documentation"
+            for (i = 1; i <= doc_count; i++) {
+                print "- " docs[i]
+            }
+            print ""
+        }
+        
+        if (feat_count > 0) {
+            print "### ✨ Added"
+            for (i = 1; i <= feat_count; i++) {
+                print "- " features[i]
+            }
+            print ""
+        }
+        
+        if (other_count > 0) {
+            print "### 📝 Other"
+            for (i = 1; i <= other_count; i++) {
+                print "- " others[i]
+            }
+            print ""
+        }
+        
+        print "---"
+        print ""
+        print "## [Unreleased]"
+        print ""
+        print "### 📝 Pending"
+        print "- Upcoming changes will appear here"
+        print ""
+        print "---"
+        print ""
+        in_unreleased = 0
+        print $0
+        next
+    }
+    
+    # Collect entries from unreleased section
+    in_unreleased && /^- \*\*/ {
+        entry = $0
+        gsub(/^- /, "", entry)
+        
+        if (match(entry, /\*\*fix\(/)) {
+            fixes[++fix_count] = entry
+        } else if (match(entry, /\*\*docs\(/)) {
+            docs[++doc_count] = entry
+        } else if (match(entry, /\*\*feat\(/)) {
+            features[++feat_count] = entry
+        } else {
+            others[++other_count] = entry
+        }
+        next
+    }
+    
+    # Skip other lines in unreleased section
+    in_unreleased && (/^### / || /^- Upcoming/ || /^---/ || /^$/) {
+        next
+    }
+    
+    # Print all other lines
+    !in_unreleased { print }
+    ' "$CHANGELOG_FILE" > "$temp_file"
+    
+    # Replace the original file
+    mv "$temp_file" "$CHANGELOG_FILE"
+    
+    # Save new version
+    save_version "$new_version"
+    
+    echo -e "${GREEN}✅ Release ${new_version} created successfully${NC}"
+    echo -e "${BLUE}📅 Date: ${date}${NC}"
+}
+
+# Function to show latest version
 show_latest() {
     local current_version=$(get_current_version)
-    echo -e "${BLUE}📋 Versión current: ${current_version}${NC}"
+    echo -e "${BLUE}📋 Current version: ${current_version}${NC}"
     
     if [[ -f "$CHANGELOG_FILE" ]]; then
-        echo -e "\n${BLUE}📝 Últimos cambios:${NC}"
-        # Mostrar desde [Unreleased] hasta la siguiente línea con ##
-        awk '/^\[Unreleased\]/{flag=1; next} /^## \[/ && flag{exit} flag' "$CHANGELOG_FILE" | head -20
+        echo -e "\n${BLUE}📝 Latest changes:${NC}"
+        # Show from [Unreleased] until next line with ##
+        awk '/^## \[Unreleased\]/{flag=1; next} /^## \[/ && flag{exit} flag' "$CHANGELOG_FILE" | head -20
     fi
 }
 
-# Función para validar el changelog
+# Function to validate changelog
 validate_changelog() {
-    echo -e "${BLUE}🔍 Validando changelog...${NC}"
+    echo -e "${BLUE}🔍 Validating changelog...${NC}"
     
     local errors=0
     
-    # Verificar que existe el file
+    # Verify file exists
     if [[ ! -f "$CHANGELOG_FILE" ]]; then
-        echo -e "${RED}❌ Error: No se encontró $CHANGELOG_FILE${NC}"
+        echo -e "${RED}❌ Error: $CHANGELOG_FILE not found${NC}"
         return 1
     fi
     
-    # Verificar estructura básica
+    # Verify basic structure
     if ! grep -q "# 📝 CHANGELOG" "$CHANGELOG_FILE"; then
-        echo -e "${RED}❌ Error: Falta header principal${NC}"
+        echo -e "${RED}❌ Error: Missing main header${NC}"
         ((errors++))
     fi
     
-    # Verificar formato de versiones
+    # Verify version format
     if ! grep -q "\[.*\] - [0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}" "$CHANGELOG_FILE"; then
-        echo -e "${YELLOW}⚠️  Warning: Formato de fecha inconsistente${NC}"
+        echo -e "${YELLOW}⚠️  Warning: Inconsistent date format${NC}"
     fi
     
-    # Verificar conventional commits
-    local invalid_commits=$(grep -E "^- \*\*" "$CHANGELOG_FILE" | grep -v -E "^- \*\*(feat|fix|docs|style|refactor|perf|test|chore|security)\(" || true)
+    # Verify conventional commits
+    local invalid_commits=$(grep -E "^- \*\*" "$CHANGELOG_FILE" | grep -v -E "^- \*\*(feat|fix|docs|style|refactor|perf|test|chore|security)\(" | grep -v -E "^- \*\*(feat|fix|docs|style|refactor|perf|test|chore|security)\*\*:" || true)
     if [[ -n "$invalid_commits" ]]; then
-        echo -e "${YELLOW}⚠️  Warning: Entradas que no siguen conventional commits:${NC}"
+        echo -e "${YELLOW}⚠️  Warning: Entries that don't follow conventional commits:${NC}"
         echo "$invalid_commits"
     fi
     
     if [[ $errors -eq 0 ]]; then
-        echo -e "${GREEN}✅ Changelog válido${NC}"
+        echo -e "${GREEN}✅ Valid changelog${NC}"
     else
-        echo -e "${RED}❌ Se encontraron $errors errores${NC}"
+        echo -e "${RED}❌ Found $errors errors${NC}"
         return 1
     fi
 }
 
-# Script principal
+# Main script
 main() {
     case "${1:-help}" in
         "add")
             if [[ $# -lt 4 ]]; then
-                echo -e "${RED}❌ Error: Faltan argumentos${NC}"
-                echo "Uso: $0 add <type> <scope> <description>"
+                echo -e "${RED}❌ Error: Missing arguments${NC}"
+                echo "Usage: $0 add <type> <scope> <description>"
                 exit 1
             fi
             add_entry "$2" "$3" "${*:4}"
             ;;
         "release")
             if [[ -z "${2:-}" ]]; then
-                echo -e "${RED}❌ Error: Especifica una version${NC}"
-                echo "Ejemplo: $0 release 1.1.0"
+                echo -e "${RED}❌ Error: Specify a version${NC}"
+                echo "Example: $0 release 1.1.0"
                 exit 1
             fi
             create_release "$2"
@@ -303,7 +361,7 @@ main() {
             show_help
             ;;
         *)
-            echo -e "${RED}❌ Comando desconocido: ${1}${NC}"
+            echo -e "${RED}❌ Unknown command: ${1}${NC}"
             echo ""
             show_help
             exit 1
@@ -311,5 +369,5 @@ main() {
     esac
 }
 
-# Ejecutar función principal
+# Execute main function
 main "$@"

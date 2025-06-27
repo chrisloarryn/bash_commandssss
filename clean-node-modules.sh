@@ -168,7 +168,7 @@ if [[ "${1:-}" == "--help" ]] || [[ "${1:-}" == "-h" ]]; then
     exit 0
 fi
 
-# Procesar argumentos
+# Process arguments
 DRY_RUN=false
 INTERACTIVE=false
 CUSTOM_PATH=""
