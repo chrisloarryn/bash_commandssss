@@ -618,12 +618,12 @@ curl -s https://go.dev/VERSION?m=text
 
 ---
 
-## 📊 Compatibilidad
+## 📊 Compatibility
 
-| Característica | macOS Intel | macOS Apple Silicon | Homebrew | Manual |
+| Feature | macOS Intel | macOS Apple Silicon | Homebrew | Manual |
 |---------------|-------------|-------------------|----------|--------|
-| Go estándar | ✅ | ✅ | ✅ | ✅ |
-| Gestor 'g' | ✅ | ✅ | ❌ | ✅ |
+| Standard Go | ✅ | ✅ | ✅ | ✅ |
+| 'g' Manager | ✅ | ✅ | ❌ | ✅ |
 | NVM | ✅ | ✅ | ✅ | ✅ |
 | Node.js LTS | ✅ | ✅ | ✅ | ✅ |
 

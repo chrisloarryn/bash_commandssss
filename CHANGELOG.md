@@ -7,10 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.0.3] - 2025-06-27
+## [1.0.6] - 2025-06-27
 
-### 🐛 Fixed
-- **fix(core)**: Fixed changelog-manager.sh to prevent corrupted emojis and duplicate separators
+### 📚 Documentation
+- **docs(docs)**: Translated compatibility table to English and fixed changelog order- Upcoming changes will appear here
+
+---
+
+## [Unreleased]
+
+### 📝 Pending
+- Upcoming changes will appear here
+
+---
+
+## [1.0.5] - 2025-06-27
+
+### � Documentation
+- **docs(docs)**: Complete README.md translation to English
 
 ---
 
@@ -27,17 +41,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.0.5] - 2025-06-27
+## [1.0.3] - 2025-06-27
 
-### 📚 Documentation
-- **docs(docs)**: Complete README.md translation to English
-
----
-
-## [Unreleased]
-
-### 📝 Pending
-- Upcoming changes will appear here
+### � Fixed
+- **fix(core)**: Fixed changelog-manager.sh to prevent corrupted emojis and duplicate separators
 
 ---
 
