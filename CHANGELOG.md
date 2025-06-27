@@ -27,6 +27,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.5] - 2025-06-27
+
+### 📚 Documentation
+- **docs(docs)**: Complete README.md translation to English- Upcoming changes will appear here
+
+---
+
 ## [Unreleased]
 
 ### 📝 Pending

@@ -153,21 +153,21 @@ fix_permissions() {
 ## ⚙️ `setup-go-version-manager.sh`
 
 ### **Description**
-Instala y configura el gestor de versiones 'g' para Go. Es compatible con macOS Intel y Apple Silicon.
+Installs and configures the 'g' version manager for Go. Compatible with macOS Intel and Apple Silicon.
 
 ### **Features**
 
-#### **Instalación del gestor 'g':**
-- 📦 Descarga desde repositorio oficial
-- 🔄 Método alternativo via GitHub si falla
-- 🛠️ Instalación manual como respaldo
-- 🏗️ Detecta arquitectura automáticamente (Intel/Apple Silicon)
+#### **'g' manager installation:**
+- 📦 Downloads from official repository
+- 🔄 Alternative method via GitHub if it fails
+- 🛠️ Manual installation as backup
+- 🏗️ Automatically detects architecture (Intel/Apple Silicon)
 
-#### **Configuración automática:**
-- 📝 Configura variables de entorno
-- 🛤️ Actualiza PATH en `.zshrc` y `.bash_profile`
-- 🐹 Instala la última versión de Go
-- 📖 Crea script de ayuda
+#### **Automatic configuration:**
+- 📝 Configures environment variables
+- 🛤️ Updates PATH in `.zshrc` and `.bash_profile`
+- 🐹 Installs latest Go version
+- 📖 Creates help script
 
 ### **Usage**
 ```bash
@@ -190,37 +190,37 @@ export PATH=$HOME/.g/bin:$GOROOT/bin:$GOPATH/bin:$PATH
 │   ├── 1.21.5/
 │   ├── 1.20.10/
 │   └── ...
-└── go-help.sh              # Script de ayuda
+└── go-help.sh              # Help script
 ```
 
-### **Métodos de instalación**
-1. **Método principal:** `curl -sSL https://git.io/g-install | bash -s -- -y`
-2. **Método alternativo:** Clonación desde GitHub
-3. **Método manual:** Descarga directa del ejecutable
+### **Installation methods**
+1. **Primary method:** `curl -sSL https://git.io/g-install | bash -s -- -y`
+2. **Alternative method:** Clone from GitHub
+3. **Manual method:** Direct executable download
 
-### **Comandos del gestor 'g' instalado**
+### **Installed 'g' manager commands**
 ```bash
-g install latest        # Instala la última versión
-g install 1.21.5        # Instala versión específica
-g use 1.21.5            # Cambia a versión específica
-g list                  # Lista versiones instaladas
-g list-all              # Lista todas las versiones disponibles
-g remove 1.20.10        # Elimina versión específica
-g prune                 # Elimina versiones no utilizadas
+g install latest        # Install latest version
+g install 1.21.5        # Install specific version
+g use 1.21.5            # Switch to specific version
+g list                  # List installed versions
+g list-all              # List all available versions
+g remove 1.20.10        # Remove specific version
+g prune                 # Remove unused versions
 ```
 
 ### **Expected output**
 ```
-🔧 Instalando gestor de versiones 'g' para Go...
-  Detectado: Apple Silicon (M1/M2/M3)
-▸ Descargando e instalando 'g'...
-  ✅ 'g' instalado correctamente
-▸ Configurando PATH y variables de entorno...
-  ✅ Configuración añadida a ~/.zshrc
-▸ Instalando la última versión estable de Go...
-  ✅ Go latest instalado correctamente
-▸ Creando script de ayuda...
-✅ Instalación completada!
+🔧 Installing 'g' version manager for Go...
+  Detected: Apple Silicon (M1/M2/M3)
+▸ Downloading and installing 'g'...
+  ✅ 'g' installed successfully
+▸ Configuring PATH and environment variables...
+  ✅ Configuration added to ~/.zshrc
+▸ Installing latest stable Go version...
+  ✅ Go latest installed successfully
+▸ Creating help script...
+✅ Installation completed!
 ```
 
 ---
@@ -232,59 +232,59 @@ Script avanzado para gestionar múltiples versiones de Go using the 'g' manager.
 
 ### **Features**
 
-#### **Gestión de versiones:**
-- 📦 Instalación de versiones específicas
-- 🔄 Cambio rápido entre versiones
-- 📋 Listado de versiones instaladas y disponibles
-- 🗑️ Eliminación de versiones específicas
-- 🧹 Limpieza de versiones no utilizadas
+#### **Version management:**
+- 📦 Installation of specific versions
+- 🔄 Quick switching between versions
+- 📋 List of installed and available versions
+- 🗑️ Removal of specific versions
+- 🧹 Cleanup of unused versions
 
-#### **Características avanzadas:**
-- 🎨 Interfaz con colores
-- 📁 Configuración por proyecto (`.go-version`)
-- 📊 Estado completo del sistema
-- 💾 Información de uso de disco
-- 🚀 Instalación automática de la última versión
+#### **Advanced features:**
+- 🎨 Colored interface
+- 📁 Project configuration (`.go-version`)
+- 📊 Complete system status
+- 💾 Disk usage information
+- 🚀 Automatic installation of latest version
 
 ### **Usage**
 ```bash
 ./go-version-switcher.sh [comando] [argumentos]
 ```
 
-### **Comandos disponibles**
+### **Available commands**
 
-#### **Comandos básicos:**
+#### **Basic commands:**
 ```bash
-./go-version-switcher.sh install 1.21.5     # Instala versión específica
-./go-version-switcher.sh use 1.21.5         # Cambia a versión específica
-./go-version-switcher.sh list               # Lista versiones instaladas
-./go-version-switcher.sh current            # Muestra versión actual
-./go-version-switcher.sh latest             # Instala la última versión
+./go-version-switcher.sh install 1.21.5     # Install specific version
+./go-version-switcher.sh use 1.21.5         # Switch to specific version
+./go-version-switcher.sh list               # List installed versions
+./go-version-switcher.sh current            # Show current version
+./go-version-switcher.sh latest             # Install latest version
 ```
 
-#### **Comandos avanzados:**
+#### **Advanced commands:**
 ```bash
-./go-version-switcher.sh project 1.21.5     # Configura proyecto
-./go-version-switcher.sh remove 1.20.10     # Elimina versión
-./go-version-switcher.sh cleanup            # Limpia versiones no usadas
-./go-version-switcher.sh status             # Estado completo del sistema
+./go-version-switcher.sh project 1.21.5     # Configure project
+./go-version-switcher.sh remove 1.20.10     # Remove version
+./go-version-switcher.sh cleanup            # Clean unused versions
+./go-version-switcher.sh status             # Complete system status
 ```
 
-### **Funciones internas principales**
+### **Main internal functions**
 
 #### `check_g_installed()`
-Verifica que el gestor 'g' esté instalado antes de ejecutar cualquier comando.
+Verifies that the 'g' manager is installed before executing any command.
 
 #### `install_version()`
 ```bash
 install_version() {
     local version="$1"
-    echo -e "${BLUE}📦 Instalando Go ${version}...${NC}"
+    echo -e "${BLUE}📦 Installing Go ${version}...${NC}"
     
     if g install "$version"; then
-        echo -e "${GREEN}✅ Go ${version} instalado correctamente${NC}"
+        echo -e "${GREEN}✅ Go ${version} installed successfully${NC}"
     else
-        echo -e "${RED}❌ Error instalando Go ${version}${NC}"
+        echo -e "${RED}❌ Error installing Go ${version}${NC}"
         return 1
     fi
 }
@@ -294,64 +294,64 @@ install_version() {
 ```bash
 use_version() {
     local version="$1"
-    echo -e "${BLUE}🔄 Cambiando a Go ${version}...${NC}"
+    echo -e "${BLUE}🔄 Switching to Go ${version}...${NC}"
     
     if g use "$version"; then
-        echo -e "${GREEN}✅ Cambiado a Go ${version}${NC}"
-        echo -e "${BLUE}📋 Versión actual:${NC} $(go version)"
+        echo -e "${GREEN}✅ Switched to Go ${version}${NC}"
+        echo -e "${BLUE}📋 Current version:${NC} $(go version)"
     else
-        echo -e "${RED}❌ Error cambiando a Go ${version}${NC}"
+        echo -e "${RED}❌ Error switching to Go ${version}${NC}"
         return 1
     fi
 }
 ```
 
 #### `setup_project_version()`
-Crea un archivo `.go-version` en el directorio actual y configura el proyecto para usar una versión específica.
+Creates a `.go-version` file in the current directory and configures the project to use a specific version.
 
 #### `show_status()`
-Muestra información completa del sistema:
-- Estado del gestor 'g'
-- Versión actual de Go
-- Variables de entorno (GOROOT, GOPATH)
-- Versiones instaladas
+Shows complete system information:
+- Status of 'g' manager
+- Current Go version
+- Environment variables (GOROOT, GOPATH)
+- Installed versions
 - Disk usage
 
-### **Archivo de configuración por proyecto**
+### **Project configuration file**
 ```bash
 # .go-version
 1.21.5
 ```
 
-### **Códigos de color utilizados**
+### **Color codes used**
 ```bash
-RED='\033[0;31m'      # Errores
-GREEN='\033[0;32m'    # Éxito
-YELLOW='\033[1;33m'   # Advertencias
-BLUE='\033[0;34m'     # Información
-NC='\033[0m'          # Sin color
+RED='\033[0;31m'      # Errors
+GREEN='\033[0;32m'    # Success
+YELLOW='\033[1;33m'   # Warnings
+BLUE='\033[0;34m'     # Information
+NC='\033[0m'          # No color
 ```
 
-### **Salida del comando `status`**
+### **`status` command output**
 ```
-📊 Estado del sistema Go:
+📊 Go system status:
 
-🔧 Gestor 'g':
-  ✅ Instalado: versión 0.10.0
+🔧 'g' Manager:
+  ✅ Installed: version 0.10.0
 
-🐹 Go actual:
-📍 Versión actual de Go:
+🐹 Current Go:
+📍 Current Go version:
 go version go1.21.5 darwin/amd64
-📂 GOROOT: /Users/usuario/.g/go
-📂 GOPATH: /Users/usuario/go
+📂 GOROOT: /Users/user/.g/go
+📂 GOPATH: /Users/user/go
 
-📦 Versiones instaladas:
-📋 Versiones de Go instaladas:
+📦 Installed versions:
+📋 Installed Go versions:
 * 1.21.5
   1.20.10
 
-💾 Espacio en disco:
-  45M    /Users/usuario/.g
+💾 Disk space:
+  45M    /Users/user/.g
 ```
 
 ---
@@ -359,102 +359,102 @@ go version go1.21.5 darwin/amd64
 ## 📝 `changelog-manager.sh`
 
 ### **Description**
-Script para gestionar el CHANGELOG.md siguiendo las convenciones de Conventional Commits y Semantic Versioning. Automatiza la creación de entradas consistentes y la gestión de versiones.
+Script for managing CHANGELOG.md following Conventional Commits conventions and Semantic Versioning. Automates the creation of consistent entries and version management.
 
 ### **Features**
 
-#### **Gestión de entradas:**
-- ✅ Validación de tipos de commit según Conventional Commits
-- ✅ Validación de scopes específicos del proyecto
-- ✅ Formato automático con emojis y estructura consistente
-- ✅ Inserción automática en la sección correcta
+#### **Entry management:**
+- ✅ Validation of commit types according to Conventional Commits
+- ✅ Validation of project-specific scopes
+- ✅ Automatic formatting with emojis and consistent structure
+- ✅ Automatic insertion in the correct section
 
-#### **Gestión de versiones:**
-- ✅ Creación automática de releases con fecha
-- ✅ Versionado semántico automático
-- ✅ Gestión de sección [Unreleased]
-- ✅ Archivo de versión (.version) para tracking
+#### **Version management:**
+- ✅ Automatic creation of releases with date
+- ✅ Automatic semantic versioning
+- ✅ Management of [Unreleased] section
+- ✅ Version file (.version) for tracking
 
-#### **Validación y calidad:**
-- ✅ Validación completa del formato del changelog
-- ✅ Verificación de estructura y convenciones
-- ✅ Detección de entradas mal formateadas
+#### **Validation and quality:**
+- ✅ Complete changelog format validation
+- ✅ Structure and conventions verification
+- ✅ Detection of malformed entries
 
 ### **Usage**
 ```bash
 ./changelog-manager.sh [comando] [argumentos]
 ```
 
-### **Comandos disponibles**
+### **Available commands**
 
-#### **Añadir entradas:**
+#### **Add entries:**
 ```bash
-./changelog-manager.sh add feat go 'Soporte para Go 1.22'
-./changelog-manager.sh add fix cleanup 'Corrección en limpieza de permisos'
-./changelog-manager.sh add docs readme 'Actualización de documentation'
+./changelog-manager.sh add feat go 'Support for Go 1.22'
+./changelog-manager.sh add fix cleanup 'Fix in permissions cleanup'
+./changelog-manager.sh add docs readme 'Documentation update'
 ```
 
-#### **Gestión de versiones:**
+#### **Version management:**
 ```bash
-./changelog-manager.sh release 1.1.0     # Crear nueva versión
-./changelog-manager.sh show              # Mostrar versión actual
-./changelog-manager.sh validate          # Validar formato
+./changelog-manager.sh release 1.1.0     # Create new version
+./changelog-manager.sh show              # Show current version
+./changelog-manager.sh validate          # Validate format
 ```
 
-### **Tipos de commit válidos**
-- **feat**: Nueva funcionalidad
-- **fix**: Corrección de bug
-- **docs**: Cambios en documentation
-- **style**: Cambios de formato
-- **refactor**: Refactorización de código
-- **perf**: Mejoras de performance
-- **test**: Añadir o corregir tests
-- **chore**: Cambios en build o herramientas
-- **security**: Mejoras de seguridad
+### **Valid commit types**
+- **feat**: New functionality
+- **fix**: Bug fix
+- **docs**: Documentation changes
+- **style**: Format changes
+- **refactor**: Code refactoring
+- **perf**: Performance improvements
+- **test**: Add or fix tests
+- **chore**: Build or tool changes
+- **security**: Security improvements
 
-### **Scopes del proyecto**
-- **core**: Funcionalidad principal
-- **go**: Gestión de Go
-- **node**: Gestión de Node.js
-- **docs**: Documentación
-- **config**: Configuración
-- **ui**: Interfaz de usuario
-- **install**: Instalación
-- **cleanup**: Limpieza
-- **validation**: Validaciones
-- **backup**: Respaldos
-- **project**: Por proyecto
+### **Project scopes**
+- **core**: Main functionality
+- **go**: Go management
+- **node**: Node.js management
+- **docs**: Documentation
+- **config**: Configuration
+- **ui**: User interface
+- **install**: Installation
+- **cleanup**: Cleanup
+- **validation**: Validations
+- **backup**: Backups
+- **project**: Per project
 
-### **Estructura generada**
+### **Generated structure**
 
-#### **Entrada típica:**
+#### **Typical entry:**
 ```markdown
 ## [Unreleased]
 
 ### ✨ feat
-- **feat(go)**: Soporte para Go 1.22
-- **feat(ui)**: Interfaz mejorada con colores
+- **feat(go)**: Support for Go 1.22
+- **feat(ui)**: Improved interface with colors
 
 ### 🐛 fix
-- **fix(cleanup)**: Corrección en limpieza de permisos
+- **fix(cleanup)**: Fix in permissions cleanup
 ```
 
-#### **Release generado:**
+#### **Generated release:**
 ```markdown
 ## [1.1.0] - 2025-06-27
 
 ### ✨ feat
-- **feat(go)**: Soporte para Go 1.22
-- **feat(ui)**: Interfaz mejorada con colores
+- **feat(go)**: Support for Go 1.22
+- **feat(ui)**: Improved interface with colors
 
 ### 🐛 fix
-- **fix(cleanup)**: Corrección en limpieza de permisos
+- **fix(cleanup)**: Fix in permissions cleanup
 ```
 
-### **Funciones internas principales**
+### **Main internal functions**
 
-#### `validate_type()` y `validate_scope()`
-Validan que los tipos y scopes estén en las listas permitidas del proyecto.
+#### `validate_type()` and `validate_scope()`
+Validate that types and scopes are in the project's allowed lists.
 
 #### `add_entry()`
 ```bash
@@ -463,26 +463,26 @@ add_entry() {
     local scope="$2"    # go, node, docs, etc.
     local description="$3"  # Change description
     
-    # Validación y formateo automático
-    # Inserción en sección [Unreleased]
+    # Validation and automatic formatting
+    # Insertion in [Unreleased] section
 }
 ```
 
 #### `create_release()`
-Convierte la sección [Unreleased] en una versión específica con fecha y crea nueva sección [Unreleased].
+Converts the [Unreleased] section into a specific version with date and creates new [Unreleased] section.
 
-### **Archivos generados**
-- **CHANGELOG.md**: Archivo principal con historial
-- **.version**: Archivo de tracking de versión actual
+### **Generated files**
+- **CHANGELOG.md**: Main file with history
+- **.version**: Current version tracking file
 
-### **Integración con Git**
+### **Git integration**
 ```bash
-# Flujo típico de desarrollo
-./changelog-manager.sh add feat go 'Nueva funcionalidad X'
+# Typical development flow
+./changelog-manager.sh add feat go 'New functionality X'
 git add .
-git commit -m "feat(go): Nueva funcionalidad X"
+git commit -m "feat(go): New functionality X"
 
-# Al hacer release
+# When making release
 ./changelog-manager.sh release 1.1.0
 git add .
 git commit -m "chore: Release 1.1.0"
@@ -491,81 +491,81 @@ git tag v1.1.0
 
 ### **Expected output**
 
-#### Comando `add`:
+#### `add` command:
 ```
-📝 Añadiendo entrada:
-✨ - **feat(go)**: Soporte para Go 1.22
-✅ Entrada añadida al changelog
-```
-
-#### Comando `release`:
-```
-🚀 Creando release 1.1.0
-✅ Release 1.1.0 creado exitosamente
-📅 Fecha: 2025-06-27
+📝 Adding entry:
+✨ - **feat(go)**: Support for Go 1.22
+✅ Entry added to changelog
 ```
 
-#### Comando `validate`:
+#### `release` command:
 ```
-🔍 Validando changelog...
-✅ Changelog válido
+🚀 Creating release 1.1.0
+✅ Release 1.1.0 created successfully
+📅 Date: 2025-06-27
 ```
 
-### **Convenciones seguidas**
+#### `validate` command:
+```
+🔍 Validating changelog...
+✅ Changelog valid
+```
+
+### **Followed conventions**
 - [Conventional Commits](https://www.conventionalcommits.org/)
 - [Keep a Changelog](https://keepachangelog.com/)
 - [Semantic Versioning](https://semver.org/)
 
 ---
 
-## 🔧 Flujo de trabajo recomendado
+## 🔧 Recommended workflow
 
-### **1. Instalación inicial completa**
+### **1. Complete initial installation**
 ```bash
-# Limpieza completa (opcional)
+# Complete cleanup (optional)
 ./deep-clean-go.sh
 
-# Instalación del gestor de versiones
+# Version manager installation
 ./setup-go-version-manager.sh
 
-# Recargar configuración
+# Reload configuration
 source ~/.zshrc
 ```
 
-### **2. Gestión diaria de versiones**
+### **2. Daily version management**
 ```bash
-# Ver estado actual
+# View current status
 ./go-version-switcher.sh status
 
-# Instalar versiones necesarias
+# Install necessary versions
 ./go-version-switcher.sh install 1.21.5
 ./go-version-switcher.sh install 1.20.10
 
-# Cambiar según el proyecto
+# Switch according to project
 ./go-version-switcher.sh use 1.21.5
 ```
 
-### **3. Configuración por proyecto**
+### **3. Per-project configuration**
 ```bash
-cd mi-proyecto-go
+cd my-go-project
 ./go-version-switcher.sh project 1.21.5
-# Crea .go-version y configura la versión
+# Creates .go-version and configures the version
 ```
 
-### **4. Mantenimiento**
+### **4. Maintenance**
 ```bash
-# Limpiar versiones no usadas
+# Clean unused versions
 ./go-version-switcher.sh cleanup
 
-# Ver uso de disco
+# View disk usage
 ./go-version-switcher.sh status
 ```
 
 ---
 
-## 📚 Archivos de configuración
+## 📚 Configuration files
 
-### **~/.zshrc (configuración añadida)**
+### **~/.zshrc (added configuration)**
 ```bash
 # === Go Version Manager (g) ===
 export GOPATH=$HOME/go
@@ -573,47 +573,47 @@ export GOROOT=$HOME/.g/go
 export PATH=$HOME/.g/bin:$GOROOT/bin:$GOPATH/bin:$PATH
 ```
 
-### **~/.g/go-help.sh (script de ayuda)**
+### **~/.g/go-help.sh (help script)**
 ```bash
 #!/bin/bash
-# Comandos útiles para el gestor de versiones 'g'
+# Useful commands for the 'g' version manager
 
-echo "🐹 Gestor de versiones de Go - Comandos útiles:"
-echo "📦 Instalación:"
-echo "  g install latest        # Instala la última versión"
-echo "  g install 1.21.5        # Instala versión específica"
-# ... más comandos
+echo "🐹 Go version manager - Useful commands:"
+echo "📦 Installation:"
+echo "  g install latest        # Install latest version"
+echo "  g install 1.21.5        # Install specific version"
+# ... more commands
 ```
 
 ---
 
-## ⚠️ Solución de problemas
+## ⚠️ Troubleshooting
 
 ### **Error: Permission denied**
 ```bash
-# Problema con permisos en ~/go/pkg/mod
+# Problem with permissions in ~/go/pkg/mod
 chmod -R +w ~/go 2>/dev/null || true
 rm -rf ~/go
 
-# O usar el script de limpieza profunda
+# Or use deep cleanup script
 ./deep-clean-go.sh
 ```
 
 ### **Error: 'g' not found**
 ```bash
-# Reinstalar el gestor
+# Reinstall the manager
 ./setup-go-version-manager.sh
 
-# Recargar configuración
+# Reload configuration
 source ~/.zshrc
 ```
 
 ### **Error: No internet connection**
 ```bash
-# Verificar conexión
+# Verify connection
 curl -s https://go.dev/VERSION?m=text
 
-# Usar instalación manual si persiste
+# Use manual installation if it persists
 ```
 
 ---
@@ -629,41 +629,41 @@ curl -s https://go.dev/VERSION?m=text
 
 ---
 
-## 🚀 Próximos pasos
+## 🚀 Next steps
 
-1. **Ejecutar instalación inicial:**
+1. **Run initial installation:**
    ```bash
    ./setup-go-version-manager.sh
    source ~/.zshrc
    ```
 
-2. **Verificar instalación:**
+2. **Verify installation:**
    ```bash
    ./go-version-switcher.sh status
    ```
 
-3. **Instalar versiones necesarias:**
+3. **Install necessary versions:**
    ```bash
    ./go-version-switcher.sh install 1.21.5
    ./go-version-switcher.sh use 1.21.5
    ```
 
-4. **Configurar proyecto:**
+4. **Configure project:**
    ```bash
-   cd tu-proyecto
+   cd your-project
    ./go-version-switcher.sh project 1.21.5
    ```
 
 ---
 
-## 📞 Soporte
+## 📞 Support
 
-Para problemas o mejoras, revisa:
-- Variables de entorno con `./go-version-switcher.sh status`
-- Logs en `/tmp/` para errores de instalación
-- Archivos de backup en `~/.zshrc.backup.*`
+For problems or improvements, check:
+- Environment variables with `./go-version-switcher.sh status`
+- Logs in `/tmp/` for installation errors
+- Backup files in `~/.zshrc.backup.*`
 
-¡Todos los scripts están diseñados para ser robustos y manejar errores automáticamente!
+All scripts are designed to be robust and handle errors automatically!
 
 ---
 
@@ -674,42 +674,42 @@ Script inteligente para realizar commits automáticos con análisis detallado de
 
 ### **Features**
 
-#### **Análisis inteligente de cambios:**
-- 🔍 Detección automática de tipos de cambio (feat, fix, docs, etc.)
-- 📂 Categorización por scope basada en el tipo de archivo
-- 📊 Estadísticas detalladas de cambios por tipo y scope
-- 📋 Generación automática de mensajes descriptivos
+#### **Intelligent change analysis:**
+- 🔍 Automatic detection of change types (feat, fix, docs, etc.)
+- 📂 Categorization by scope based on file type
+- 📊 Detailed change statistics by type and scope
+- 📋 Automatic generation of descriptive messages
 
-#### **Características avanzadas:**
-- ✏️ Edición interactiva de mensajes de commit
-- 📤 Push automático opcional al repositorio remoto
-- 🎨 Interfaz con colores adaptativa según el OS
-- 🔒 Validación de repositorio Git antes de ejecutar
+#### **Advanced features:**
+- ✏️ Interactive editing of commit messages
+- 📤 Optional automatic push to remote repository
+- 🎨 Adaptive color interface according to OS
+- 🔒 Git repository validation before execution
 
 ### **Usage**
 ```bash
 ./auto-commit.sh
 ```
 
-### **Flujo de trabajo**
-1. Analiza archivos en staging area (o los añade automáticamente)
-2. Categoriza cambios por tipo y scope
-3. Genera mensaje de commit sugerido
-4. Permite edición o confirmación del mensaje
-5. Realiza el commit con información detallada
-6. Opcionalmente hace push al repositorio remoto
+### **Workflow**
+1. Analyzes files in staging area (or adds them automatically)
+2. Categorizes changes by type and scope
+3. Generates suggested commit message
+4. Allows editing or confirmation of message
+5. Makes commit with detailed information
+6. Optionally pushes to remote repository
 
-### **Tipos de commit detectados automáticamente**
+### **Automatically detected commit types**
 - **feat**: New .sh files, features
-- **docs**: Archivos .md, documentation
-- **fix**: Archivos con "fix" o "bug" en el nombre
-- **config**: Archivos .json, .yaml, .yml
-- **test**: Archivos con "test" o "spec"
+- **docs**: .md files, documentation
+- **fix**: Files with "fix" or "bug" in the name
+- **config**: .json, .yaml, .yml files
+- **test**: Files with "test" or "spec"
 
-### **Compatibilidad**
-- ✅ macOS (colores completos)
-- ✅ Linux (colores completos)  
-- ✅ Windows Git Bash/WSL (colores simplificados)
+### **Compatibility**
+- ✅ macOS (full colors)
+- ✅ Linux (full colors)  
+- ✅ Windows Git Bash/WSL (simplified colors)
 
 ---
 
@@ -720,24 +720,24 @@ Script especializado para eliminar todas las versiones de Node.js instaladas con
 
 ### **Features**
 
-#### **Gestión de NVM:**
-- 🔍 Detección automática de NVM estándar y nvm-windows
-- 📦 Instalación automática de NVM si no está presente
-- 🔄 Carga automática de NVM según el sistema operativo
-- ⚙️ Configuración de archivos de shell apropiados
+#### **NVM management:**
+- 🔍 Automatic detection of standard NVM and nvm-windows
+- 📦 Automatic NVM installation if not present
+- 🔄 Automatic NVM loading according to operating system
+- ⚙️ Configuration of appropriate shell files
 
-#### **Limpieza inteligente:**
-- 🎯 Detección automática de la versión LTS más reciente
-- 🗑️ Eliminación selectiva de todas las versiones no-LTS
-- 🧹 Limpieza de caché de npm en múltiples ubicaciones
-- ✅ Configuración automática como versión por defecto
+#### **Intelligent cleanup:**
+- 🎯 Automatic detection of the latest LTS version
+- 🗑️ Selective removal of all non-LTS versions
+- 🧹 npm cache cleanup in multiple locations
+- ✅ Automatic configuration as default version
 
 ### **Usage**
 ```bash
 ./clean-node-versions.sh
 ```
 
-### **Ubicaciones de caché limpiadas**
+### **Cleaned cache locations**
 #### macOS/Linux:
 - `~/.npm`
 - `~/Library/Caches/npm` (macOS)
@@ -748,10 +748,10 @@ Script especializado para eliminar todas las versiones de Node.js instaladas con
 - `/c/Users/$USER/AppData/Local/npm-cache`
 - `/c/Users/$USER/AppData/Roaming/npm-cache`
 
-### **Compatibilidad con gestores**
-- ✅ NVM estándar (Unix-like)
+### **Manager compatibility**
+- ✅ Standard NVM (Unix-like)
 - ✅ nvm-windows
-- ✅ Detección automática del tipo de instalación
+- ✅ Automatic detection of installation type
 
 ---
 
@@ -762,57 +762,57 @@ Script potente para buscar y eliminar todos los directorios `node_modules` del s
 
 ### **Features**
 
-#### **Búsqueda inteligente:**
-- 🔍 Búsqueda recursiva con límite de profundidad configurable
-- 📊 Cálculo de tamaño para cada directorio encontrado
-- 🎯 Filtros para evitar directorios del sistema (Windows/System32)
-- ⏱️ Timeout para evitar búsquedas infinitas
+#### **Intelligent search:**
+- 🔍 Recursive search with configurable depth limit
+- 📊 Size calculation for each directory found
+- 🎯 Filters to avoid system directories (Windows/System32)
+- ⏱️ Timeout to avoid infinite searches
 
-#### **Modos de operación:**
-- 🔍 **Dry-run**: Solo mostrar qué se eliminaría sin borrar
-- 🤝 **Interactivo**: Confirmar cada eliminación individualmente
-- 📂 **Path específico**: Buscar solo en directorio especificado
-- 🚀 **Completo**: Eliminación automática en directorios estándar
+#### **Operation modes:**
+- 🔍 **Dry-run**: Only show what would be deleted without removing
+- 🤝 **Interactive**: Confirm each deletion individually
+- 📂 **Specific path**: Search only in specified directory
+- 🚀 **Complete**: Automatic deletion in standard directories
 
 ### **Usage**
 ```bash
-# Búsqueda completa y eliminación
+# Complete search and deletion
 ./clean-node-modules.sh
 
-# Solo mostrar qué se encontró (no eliminar)
+# Only show what was found (don't delete)
 ./clean-node-modules.sh --dry-run
 
-# Modo interactivo (confirmar cada uno)
+# Interactive mode (confirm each one)
 ./clean-node-modules.sh --interactive
 
-# Buscar solo en directorio específico
+# Search only in specific directory
 ./clean-node-modules.sh --path ~/Projects
 
-# Ver ayuda completa
+# View complete help
 ./clean-node-modules.sh --help
 ```
 
-### **Directorios de búsqueda por defecto**
+### **Default search directories**
 
 #### macOS/Linux:
-- `~/` (directorio home)
+- `~/` (home directory)
 - `/Users` (macOS) / `/home` (Linux)
 - `/opt`
 - `/var/www`
 - `/workspace`
 
 #### Windows:
-- `~/` (directorio home)
+- `~/` (home directory)
 - `/c/Users/$USER`
 - `/c/Projects`
 - `/c/workspace`
-- `/d` (si existe unidad D)
+- `/d` (if D drive exists)
 
-### **Características de seguridad**
-- 🔒 Confirmación obligatoria antes de eliminación masiva
-- 💾 Cálculo y mostrado de espacio a liberar
+### **Security features**
+- 🔒 Mandatory confirmation before mass deletion
+- 💾 Calculation and display of space to be freed
 - 🔧 Automatic use of `sudo` when necessary (Unix)
-- ⚠️ Avisos claros sobre operaciones destructivas
+- ⚠️ Clear warnings about destructive operations
 
 ---
 
@@ -823,69 +823,69 @@ Sistema automatizado para gestionar el changelog del proyecto siguiendo las conv
 
 ### **Features**
 
-#### **Gestión de entradas:**
-- ➕ Añadir entradas categorizadas automáticamente
-- 🏷️ Creación de releases con versionado semántico
-- 👁️ Visualización del estado actual del changelog
-- ✅ Validación de formato y estructura
+#### **Entry management:**
+- ➕ Add automatically categorized entries
+- 🏷️ Release creation with semantic versioning
+- 👁️ Current changelog status visualization
+- ✅ Format and structure validation
 
-#### **Convenciones soportadas:**
+#### **Supported conventions:**
 - 📋 **Keep a Changelog** format
 - 🤝 **Conventional Commits** types
-- 📊 **Semantic Versioning** para releases
-- 🎨 Emojis categorizados por tipo de cambio
+- 📊 **Semantic Versioning** for releases
+- 🎨 Emojis categorized by change type
 
 ### **Usage**
 ```bash
-# Añadir nueva entrada
-./changelog-manager.sh add feat scripts 'Nueva funcionalidad'
-./changelog-manager.sh add fix go 'Corregido problema de permisos'
-./changelog-manager.sh add docs readme 'Actualizada documentation'
+# Add new entry
+./changelog-manager.sh add feat scripts 'New functionality'
+./changelog-manager.sh add fix go 'Fixed permissions problem'
+./changelog-manager.sh add docs readme 'Updated documentation'
 
-# Crear nueva release
+# Create new release
 ./changelog-manager.sh release 1.1.0
 
-# Ver estado actual
+# View current status
 ./changelog-manager.sh show
 
-# Validar formato
+# Validate format
 ./changelog-manager.sh validate
 
-# Ver ayuda
+# View help
 ./changelog-manager.sh help
 ```
 
 ### **Tipos de commit soportados**
-| Tipo | Emoji | Categoría | Description |
+| Type | Emoji | Category | Description |
 |------|-------|-----------|-------------|
-| `feat` | ✨ | Feat | Nueva funcionalidad |
-| `fix` | 🐛 | Fixed | Corrección de bug |
-| `docs` | 📚 | Documentation | Cambios en documentation |
-| `style` | 🎨 | Style | Formateo, espacios |
-| `refactor` | ♻️ | Refactor | Refactorización |
-| `perf` | ⚡ | Performance | Mejoras de rendimiento |
+| `feat` | ✨ | Feat | New functionality |
+| `fix` | 🐛 | Fixed | Bug fix |
+| `docs` | 📚 | Documentation | Documentation changes |
+| `style` | 🎨 | Style | Formatting, spaces |
+| `refactor` | ♻️ | Refactor | Refactoring |
+| `perf` | ⚡ | Performance | Performance improvements |
 | `test` | 🧪 | Testing | Tests |
-| `chore` | 🔧 | Maintenance | Mantenimiento |
-| `security` | 🔒 | Security | Mejoras de seguridad |
+| `chore` | 🔧 | Maintenance | Maintenance |
+| `security` | 🔒 | Security | Security improvements |
 
-### **Archivos gestionados**
-- `CHANGELOG.md` - Historial detallado de cambios
-- `.version` - Versión actual del proyecto
+### **Managed files**
+- `CHANGELOG.md` - Detailed change history
+- `.version` - Current project version
 
-### **Validaciones automáticas**
-- ✅ Verificación de estructura de headers
-- ✅ Validación de formato de versiones (semver)
-- ✅ Verificación de sección [Unreleased]
-- ✅ Comprobación de formato de fechas
+### **Automatic validations**
+- ✅ Header structure verification
+- ✅ Version format validation (semver)
+- ✅ [Unreleased] section verification
+- ✅ Date format checking
 
 ---
 
-## 🌐 Compatibilidad Multiplataforma
+## 🌐 Multiplatform Compatibility
 
-Todos los scripts han sido actualizados para ser completamente compatibles con múltiples sistemas operativos:
+All scripts have been updated to be fully compatible with multiple operating systems:
 
-### **Sistemas soportados**
-| Característica | macOS Intel | macOS Apple Silicon | Linux | Windows Git Bash | Windows WSL |
+### **Supported systems**
+| Feature | macOS Intel | macOS Apple Silicon | Linux | Windows Git Bash | Windows WSL |
 |---------------|-------------|-------------------|-------|------------------|-------------|
 | Go management | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Node.js/NVM | ✅ | ✅ | ✅ | ⚠️ | ✅ |
