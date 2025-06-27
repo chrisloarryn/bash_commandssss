@@ -14,37 +14,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.0.6] - 2025-06-27
-
-### 📚 Documentation
-- **docs(docs)**: Translated compatibility table to English and fixed changelog order
-
----
-
-## [1.0.5] - 2025-06-27
-
-### 📚 Documentation
-- **docs(docs)**: Complete README.md translation to English
-
----
-
-## [1.0.4] - 2025-06-27
+## [1.0.2] - 2025-06-27
 
 ### 🐛 Fixed
-- **fix(core)**: Completely rewrote changelog-manager.sh to fix emoji corruption, syntax errors, and duplicate separators
 - **fix(validation)**: Enhanced changelog validator to reduce false positives with documentation sections
 - **fix(core)**: Improved changelog-manager.sh logic for better entry insertion and structure organization
 - **fix(core)**: Fixed changelog-manager.sh to properly organize CHANGELOG.md structure
 
 ### 📚 Documentation
 - **docs(docs)**: Reorganized CHANGELOG.md structure, fixed duplicated sections and improved formatting
-
----
-
-## [1.0.3] - 2025-06-27
-
-### � Fixed
-- **fix(core)**: Fixed changelog-manager.sh to prevent corrupted emojis and duplicate separators
 
 ---
 
