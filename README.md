@@ -29,6 +29,9 @@ Installs and configures the 'g' version manager for Go. Compatible with macOS In
 6. [clean-node-versions.sh](#clean-node-versionssh) - Node.js version cleanup
 7. [clean-node-modules.sh](#clean-node-modulessh) - Node_modules removal
 8. [changelog-manager.sh](#changelog-managersh) - Automated changelog management
+9. [performance-analyzer.sh](#performance-analyzersh) - Go/Node.js performance analysis
+10. [dependency-manager.sh](#dependency-managersh) - Advanced dependency management
+11. [grpc-project-generator.sh](#grpc-project-generatorsh) - Go gRPC project generator
 
 ---
 
@@ -741,167 +744,559 @@ Script especializado para eliminar todas las versiones de Node.js instaladas con
 #### macOS/Linux:
 - `~/.npm`
 - `~/Library/Caches/npm` (macOS)
-- `~/.cache/npm` (Linux)
 
 #### Windows:
-- `~/.npm`
-- `/c/Users/$USER/AppData/Local/npm-cache`
-- `/c/Users/$USER/AppData/Roaming/npm-cache`
+- `%AppData%\npm-cache`
+- `%LocalAppData%\npm-cache`
 
-### **Manager compatibility**
-- ✅ Standard NVM (Unix-like)
-- ✅ nvm-windows
-- ✅ Automatic detection of installation type
+### **Expected output**
+```
+🧹 Node.js version cleanup with NVM...
+▸ Loading NVM…
+  ✅ NVM found and loaded
+▸ Detecting LTS version…
+  � LTS version: v20.10.0
+▸ Installing LTS version…
+  ✅ Node.js v20.10.0 installed
+▸ Removing non-LTS versions…
+  🗑️ Removed: v18.17.0
+  🗑️ Removed: v16.20.0
+▸ Cleaning npm cache…
+  ✅ npm cache cleaned
+▸ Setting LTS as default…
+  ✅ v20.10.0 set as default
+✅ Cleanup completed successfully
+```
 
 ---
 
-## 🗂️ `clean-node-modules.sh`
+## �️ `clean-node-modules.sh`
 
 ### **Description**
-Script potente para buscar y eliminar todos los directorios `node_modules` del sistema, liberando espacio en disco significativo.
+Specialized script for finding and removing all `node_modules` directories within a project or directory tree. Useful for freeing up disk space and cleaning up Node.js projects.
 
 ### **Features**
 
-#### **Intelligent search:**
-- 🔍 Recursive search with configurable depth limit
-- 📊 Size calculation for each directory found
-- 🎯 Filters to avoid system directories (Windows/System32)
-- ⏱️ Timeout to avoid infinite searches
+#### **Smart Detection:**
+- 🔍 Recursive search for `node_modules` directories
+- � Size calculation before removal
+- 🎯 Selective removal with confirmation
+- � Detailed reporting of found directories
 
-#### **Operation modes:**
-- 🔍 **Dry-run**: Only show what would be deleted without removing
-- 🤝 **Interactive**: Confirm each deletion individually
-- 📂 **Specific path**: Search only in specified directory
-- 🚀 **Complete**: Automatic deletion in standard directories
+#### **Safety Features:**
+- ⚠️ Interactive confirmation before deletion
+- 📄 Backup option for important projects
+- 🔒 Skip system/protected directories
+- � Dry-run mode to preview actions
+
+#### **Performance:**
+- ⚡ Fast parallel processing
+- � Real-time disk space reporting
+- 🎯 Optimized directory traversal
 
 ### **Usage**
 ```bash
-# Complete search and deletion
+# Remove node_modules in current directory
 ./clean-node-modules.sh
 
-# Only show what was found (don't delete)
+# Remove in specific directory
+./clean-node-modules.sh /path/to/projects
+
+# Dry run (preview only)
 ./clean-node-modules.sh --dry-run
 
-# Interactive mode (confirm each one)
-./clean-node-modules.sh --interactive
+# Force removal without confirmation
+./clean-node-modules.sh --force
 
-# Search only in specific directory
-./clean-node-modules.sh --path ~/Projects
-
-# View complete help
+# Show help
 ./clean-node-modules.sh --help
 ```
 
-### **Default search directories**
+### **Options**
+```bash
+--dry-run         Show what would be removed without deleting
+--force           Remove without confirmation prompts
+--recursive       Search recursively in subdirectories (default)
+--max-depth=N     Limit recursion depth
+--min-size=SIZE   Only remove directories larger than SIZE
+--exclude=PATTERN Exclude paths matching pattern
+--verbose         Show detailed progress
+--help            Show help message
+```
 
-#### macOS/Linux:
-- `~/` (home directory)
-- `/Users` (macOS) / `/home` (Linux)
-- `/opt`
-- `/var/www`
-- `/workspace`
+### **Expected Output**
+```
+🗂️ Node.js modules cleanup
+==========================
 
-#### Windows:
-- `~/` (home directory)
-- `/c/Users/$USER`
-- `/c/Projects`
-- `/c/workspace`
-- `/d` (if D drive exists)
+🔍 Scanning for node_modules directories...
+📂 Found 5 node_modules directories:
 
-### **Security features**
-- 🔒 Mandatory confirmation before mass deletion
-- 💾 Calculation and display of space to be freed
-- 🔧 Automatic use of `sudo` when necessary (Unix)
-- ⚠️ Clear warnings about destructive operations
+1. ./project-a/node_modules (234 MB)
+2. ./project-b/node_modules (156 MB)
+3. ./old-app/node_modules (89 MB)
+4. ./test-project/node_modules (45 MB)
+5. ./demo/node_modules (23 MB)
+
+💾 Total space to free: 547 MB
+
+⚠️ This will permanently delete all found directories.
+Continue? (y/N): y
+
+🗑️ Removing directories...
+  ✅ Removed ./project-a/node_modules (234 MB freed)
+  ✅ Removed ./project-b/node_modules (156 MB freed)
+  ✅ Removed ./old-app/node_modules (89 MB freed)
+  ✅ Removed ./test-project/node_modules (45 MB freed)
+  ✅ Removed ./demo/node_modules (23 MB freed)
+
+🎉 Cleanup completed!
+📊 Total disk space freed: 547 MB
+```
+
+### **Internal Functions**
+
+#### `find_node_modules()`
+```bash
+find_node_modules() {
+    local search_path="$1"
+    local max_depth="${2:-10}"
+    
+    find "$search_path" -type d -name "node_modules" \
+        -maxdepth "$max_depth" -not -path "*/.*"
+}
+```
+
+#### `calculate_size()`
+```bash
+calculate_size() {
+    local dir="$1"
+    if [[ -d "$dir" ]]; then
+        du -sh "$dir" 2>/dev/null | cut -f1
+    else
+        echo "0B"
+    fi
+}
+```
+
+#### `safe_remove()`
+```bash
+safe_remove() {
+    local dir="$1"
+    local force="$2"
+    
+    if [[ "$force" != "true" ]]; then
+        read -p "Remove $dir? (y/N): " -n 1 -r
+        echo
+        [[ ! $REPLY =~ ^[Yy]$ ]] && return 1
+    fi
+    
+    rm -rf "$dir"
+}
+```
+
+### **Safety Checks**
+- Validates directory exists before removal
+- Checks for write permissions
+- Avoids system directories
+- Confirms before bulk operations
+- Provides undo information when possible
 
 ---
 
-## 📝 `changelog-manager.sh`
+## 📊 `performance-analyzer.sh`
 
 ### **Description**
-Sistema automatizado para gestionar el changelog del proyecto siguiendo las convenciones de Keep a Changelog y Conventional Commits.
+Advanced performance analysis tool for Go and Node.js projects. Provides comprehensive performance metrics, benchmarking, and optimization recommendations.
 
 ### **Features**
 
-#### **Entry management:**
-- ➕ Add automatically categorized entries
-- 🏷️ Release creation with semantic versioning
-- 👁️ Current changelog status visualization
-- ✅ Format and structure validation
+#### **Go Project Analysis:**
+- 🔬 **Benchmarking**: Automatic execution of `go test -bench`
+- 📊 **Profiling**: CPU, memory, and goroutine profiling
+- 📈 **Build Analysis**: Build time and binary size analysis
+- 🧪 **Test Performance**: Test execution time analysis
+- 📋 **Memory Usage**: Heap and stack analysis
+- 🔄 **Concurrency**: Goroutine leak detection
 
-#### **Supported conventions:**
-- 📋 **Keep a Changelog** format
-- 🤝 **Conventional Commits** types
-- 📊 **Semantic Versioning** for releases
-- 🎨 Emojis categorized by change type
+#### **Node.js Project Analysis:**
+- ⚡ **Startup Time**: Application initialization analysis
+- 💾 **Memory Profiling**: V8 heap analysis
+- 🔄 **Event Loop**: Event loop lag detection
+- 📦 **Bundle Analysis**: Webpack/build output analysis
+- 🧪 **Test Performance**: Jest/Mocha execution metrics
+- 📊 **NPM Audit**: Security and performance audit
+
+#### **Universal Features:**
+- 📊 **Comparative Analysis**: Performance comparison between versions
+- 📈 **Trend Tracking**: Historical performance data
+- 🎯 **Recommendations**: Automated optimization suggestions
+- 📄 **Report Generation**: HTML and JSON reports
+- 🔔 **Alerts**: Performance regression detection
 
 ### **Usage**
 ```bash
-# Add new entry
-./changelog-manager.sh add feat scripts 'New functionality'
-./changelog-manager.sh add fix go 'Fixed permissions problem'
-./changelog-manager.sh add docs readme 'Updated documentation'
+# Analyze current directory
+./performance-analyzer.sh
 
-# Create new release
-./changelog-manager.sh release 1.1.0
+# Analyze specific project
+./performance-analyzer.sh --project=/path/to/project
 
-# View current status
-./changelog-manager.sh show
+# Compare with previous version
+./performance-analyzer.sh --compare --baseline=v1.0.0
 
-# Validate format
-./changelog-manager.sh validate
+# Generate detailed report
+./performance-analyzer.sh --report=detailed --format=html
 
-# View help
-./changelog-manager.sh help
+# Continuous monitoring
+./performance-analyzer.sh --monitor --threshold=10%
 ```
 
-### **Tipos de commit soportados**
-| Type | Emoji | Category | Description |
-|------|-------|-----------|-------------|
-| `feat` | ✨ | Feat | New functionality |
-| `fix` | 🐛 | Fixed | Bug fix |
-| `docs` | 📚 | Documentation | Documentation changes |
-| `style` | 🎨 | Style | Formatting, spaces |
-| `refactor` | ♻️ | Refactor | Refactoring |
-| `perf` | ⚡ | Performance | Performance improvements |
-| `test` | 🧪 | Testing | Tests |
-| `chore` | 🔧 | Maintenance | Maintenance |
-| `security` | 🔒 | Security | Security improvements |
+### **Options**
+```bash
+--project=PATH       Specify project directory
+--type=TYPE         Force project type (go|node)
+--compare           Enable comparison mode
+--baseline=VERSION  Set comparison baseline
+--report=LEVEL      Report detail level (basic|detailed|full)
+--format=FORMAT     Output format (text|json|html)
+--monitor           Enable continuous monitoring
+--threshold=PERCENT Performance regression threshold
+--output=FILE       Save report to file
+--verbose           Detailed output
+--help              Show help
+```
 
-### **Managed files**
-- `CHANGELOG.md` - Detailed change history
-- `.version` - Current project version
+### **Example Output**
+```
+🚀 Performance Analysis Report - Go Project
+==========================================
 
-### **Automatic validations**
-- ✅ Header structure verification
-- ✅ Version format validation (semver)
-- ✅ [Unreleased] section verification
-- ✅ Date format checking
+📊 Build Performance:
+   Build Time: 2.3s (baseline: 2.8s) ↑ 17.8% improvement
+   Binary Size: 8.2MB (baseline: 8.9MB) ↑ 7.8% reduction
+
+🧪 Test Performance:
+   Total Tests: 156 passed
+   Execution Time: 1.2s (baseline: 1.5s) ↑ 20% improvement
+   Coverage: 89.5%
+
+💾 Memory Analysis:
+   Max Heap: 45.2MB
+   GC Pressure: Low
+   Goroutines: 12 (no leaks detected)
+
+📈 Benchmarks:
+   BenchmarkAPI: 1245 ns/op (baseline: 1456 ns/op) ↑ 14.5%
+   BenchmarkDB: 892 ns/op (baseline: 923 ns/op) ↑ 3.4%
+
+🎯 Recommendations:
+   ✅ Consider using sync.Pool for frequent allocations
+   ✅ Optimize database connection pool size
+   ⚠️  High memory usage in UserService.GetAll()
+```
 
 ---
 
-## 🌐 Multiplatform Compatibility
+## 📦 `dependency-manager.sh`
 
-All scripts have been updated to be fully compatible with multiple operating systems:
+### **Description**
+Advanced dependency management tool for Go and Node.js projects. Provides security analysis, updates, cleanup, and optimization for project dependencies.
 
-### **Supported systems**
-| Feature | macOS Intel | macOS Apple Silicon | Linux | Windows Git Bash | Windows WSL |
-|---------------|-------------|-------------------|-------|------------------|-------------|
-| Go management | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Node.js/NVM | ✅ | ✅ | ✅ | ⚠️ | ✅ |
-| Auto-commit | ✅ | ✅ | ✅ | ✅ | ✅ |
-| File cleanup | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Changelog | ✅ | ✅ | ✅ | ✅ | ✅ |
+### **Features**
 
-### **System adaptations**
-- **Automatic detection** of operating system
-- **OS-specific paths** according to the OS
-- **Adaptive commands** for each platform
-- **Appropriate color codes** for each terminal
-- **Platform-specific package managers** (Homebrew, apt, chocolatey)
+#### **Go Dependency Management:**
+- 📊 **Go Modules Analysis**: Detailed go.mod/go.sum analysis
+- 🔒 **Security Scanning**: Vulnerability detection with `govulncheck`
+- 📈 **Update Management**: Intelligent dependency updates
+- 🧹 **Cleanup**: Remove unused dependencies
+- 📋 **License Analysis**: License compatibility checking
+- 🔄 **Version Conflicts**: Dependency version resolution
 
-### **Special notes for Windows**
-- ⚠️ NVM: It is recommended to use nvm-windows or WSL
-- 🎨 Colors: Simplified for better compatibility
-- 📂 Paths: Support for `/c/` style paths (Git Bash)
-- 🔧 PowerShell: Alternative commands when available
+#### **Node.js Dependency Management:**
+- 📦 **NPM/Yarn Support**: Multi-package manager support
+- 🔒 **Security Audit**: `npm audit` and `yarn audit` integration
+- 📈 **Update Strategy**: Smart dependency updates
+- 🧹 **Package Cleanup**: Remove unused packages
+- 📊 **Bundle Analysis**: Dependency size impact
+- 🔄 **Lock File Validation**: package-lock.json/yarn.lock verification
+
+#### **Universal Features:**
+- 📊 **Dependency Tree**: Visual dependency mapping
+- 📈 **Update Recommendations**: Safe update suggestions
+- 🔒 **Security Reports**: Comprehensive security analysis
+- 📄 **Documentation**: Auto-generated dependency docs
+- 🎯 **Optimization**: Dependency size and performance optimization
+- 📋 **Compliance**: License and policy compliance checking
+
+### **Usage**
+```bash
+# Analyze current project dependencies
+./dependency-manager.sh analyze
+
+# Security scan
+./dependency-manager.sh security
+
+# Update dependencies safely
+./dependency-manager.sh update --strategy=safe
+
+# Clean unused dependencies
+./dependency-manager.sh cleanup
+
+# Generate dependency report
+./dependency-manager.sh report --format=html
+
+# Check license compliance
+./dependency-manager.sh licenses --policy=strict
+```
+
+### **Commands**
+```bash
+analyze         Analyze dependency tree and health
+security        Run security vulnerability scan
+update          Update dependencies with strategy
+cleanup         Remove unused dependencies
+report          Generate dependency report
+licenses        Check license compliance
+tree            Display dependency tree
+conflicts       Detect version conflicts
+optimize        Optimize dependency usage
+monitor         Continuous dependency monitoring
+```
+
+### **Options**
+```bash
+--strategy=TYPE     Update strategy (safe|minor|major|all)
+--format=FORMAT     Output format (text|json|html|csv)
+--policy=LEVEL      License policy (permissive|strict|custom)
+--exclude=PATTERN   Exclude packages matching pattern
+--include=PATTERN   Include only packages matching pattern
+--fix              Auto-fix detected issues
+--dry-run          Show what would be done
+--report=PATH      Save report to file
+--verbose          Detailed output
+--help             Show help
+```
+
+### **Example Output**
+```
+📦 Dependency Analysis Report - Node.js Project
+===============================================
+
+📊 Overview:
+   Total Dependencies: 234 (dev: 156, prod: 78)
+   Outdated Packages: 12
+   Security Vulnerabilities: 3 (1 high, 2 moderate)
+   License Issues: 0
+
+🔒 Security Analysis:
+   HIGH: lodash@4.17.20 - Prototype Pollution
+   MODERATE: minimist@1.2.5 - Prototype Pollution
+   MODERATE: yargs-parser@20.2.7 - Prototype Pollution
+
+📈 Update Recommendations:
+   ✅ react: 17.0.2 → 18.2.0 (safe)
+   ✅ webpack: 5.75.0 → 5.88.2 (safe)
+   ⚠️  typescript: 4.8.4 → 5.1.6 (breaking changes)
+
+🧹 Cleanup Opportunities:
+   📦 Unused: moment (can use date-fns)
+   📦 Duplicate: lodash, underscore (consolidate to lodash)
+   📦 Outdated: jquery@2.1.4 (remove if unused)
+
+💾 Bundle Impact:
+   Largest Dependencies:
+   1. react-dom: 2.1MB
+   2. webpack: 1.8MB
+   3. typescript: 1.2MB
+
+🎯 Recommendations:
+   ✅ Update security vulnerabilities immediately
+   ✅ Replace moment with date-fns (-67KB)
+   ✅ Enable tree-shaking for lodash
+```
+
+---
+
+## 🏗️ `grpc-project-generator.sh`
+
+### **Description**
+Advanced Go gRPC project generator that creates production-ready microservices with hexagonal architecture, modern tooling, and best practices.
+
+### **Features**
+
+#### **Architecture & Structure:**
+- 🏗️ **Hexagonal Architecture**: Clean separation of concerns with ports and adapters
+- 📦 **Domain-Driven Design**: Rich domain models with business logic
+- 🔌 **Dependency Injection**: Using Uber FX for clean dependency management
+- 📁 **Standard Layout**: Following Go project layout conventions
+
+#### **gRPC & API:**
+- 🌐 **gRPC Server**: Full gRPC implementation with interceptors
+- 🔗 **HTTP Gateway**: gRPC-Gateway for REST API compatibility
+- 📋 **Protocol Buffers**: Complete proto definitions with annotations
+- ⚡ **Buf Integration**: Modern protobuf management and generation
+
+#### **Infrastructure & DevOps:**
+- 🐳 **Docker Ready**: Multi-stage Dockerfile and Docker Compose
+- 🔧 **Makefile**: Comprehensive development commands
+- 📊 **Logging**: Structured logging with Zap
+- 🔒 **Interceptors**: Logging, recovery, and validation interceptors
+
+#### **Development Tools:**
+- 🔄 **Hot Reload**: Air integration for development
+- 🧪 **Testing**: Unit and integration test structure
+- 📝 **Configuration**: Viper-based configuration management
+- 🔍 **Health Checks**: Built-in health check endpoints
+
+### **Usage**
+```bash
+# Basic project generation
+./grpc-project-generator.sh --out=./my-service
+
+# Custom configuration
+./grpc-project-generator.sh \
+  --out=./user-service \
+  --module=github.com/myorg/user-service \
+  --service=user \
+  --port=8080 \
+  --grpc-port=50051
+
+# Minimal setup (no Docker/Makefile)
+./grpc-project-generator.sh \
+  --out=./simple-service \
+  --no-docker \
+  --no-makefile
+```
+
+### **Options**
+```bash
+--out=PATH             Output directory path (required)
+--module=NAME          Go module name (default: github.com/example/grpc-service)
+--service=NAME         Service name (default: user-service)
+--go-version=VERSION   Go version (default: 1.21)
+--port=PORT           HTTP port (default: 8080)
+--grpc-port=PORT      gRPC port (default: 50051)
+--no-docker           Skip Docker files generation
+--no-makefile         Skip Makefile generation
+--no-buf              Skip Buf configuration
+--verbose             Verbose output
+--help                Show help
+```
+
+### **Generated Project Structure**
+```
+my-service/
+├── api/
+│   ├── proto/              # Protocol Buffer definitions
+│   └── generated/          # Generated gRPC code
+├── cmd/
+│   └── server/             # Application entrypoint
+├── internal/
+│   ├── core/
+│   │   ├── domain/         # Business entities
+│   │   ├── ports/          # Interfaces (repositories, services)
+│   │   └── services/       # Business logic implementation
+│   ├── adapters/
+│   │   ├── grpc/           # gRPC server implementation
+│   │   ├── http/           # HTTP server (gRPC-Gateway)
+│   │   └── repository/     # Data persistence adapters
+│   └── infrastructure/     # Cross-cutting concerns
+├── configs/                # Configuration files
+├── deployments/            # Docker, K8s manifests
+├── docs/                   # Documentation
+├── scripts/                # Build and utility scripts
+├── test/                   # Integration and E2E tests
+├── Dockerfile              # Multi-stage Docker build
+├── docker-compose.yml      # Development environment
+├── Makefile               # Development commands
+├── buf.yaml               # Buf configuration
+└── README.md              # Project documentation
+```
+
+### **Generated Features**
+```bash
+# Available make commands in generated project
+make help          # Show all available commands
+make build         # Build the application
+make run           # Run the application
+make test          # Run tests
+make proto         # Generate protobuf files
+make docker-run    # Run with Docker
+make dev           # Run with hot reload
+make lint          # Run linter
+```
+
+### **API Endpoints (Generated)**
+```bash
+# gRPC Endpoints
+Create{Service}     # Create new entity
+Get{Service}        # Get entity by ID
+Update{Service}     # Update entity
+Delete{Service}     # Delete entity
+List{Service}s      # List entities with pagination
+Health             # Health check
+
+# HTTP Endpoints (via gRPC-Gateway)
+POST   /v1/{service}s       # Create entity
+GET    /v1/{service}s/{id}  # Get entity
+PUT    /v1/{service}s/{id}  # Update entity
+DELETE /v1/{service}s/{id}  # Delete entity
+GET    /v1/{service}s       # List entities
+GET    /health              # Health check
+```
+
+### **Example Usage Flow**
+```bash
+# 1. Generate project
+./grpc-project-generator.sh --out=./user-service --service=user
+
+# 2. Setup project
+cd user-service
+make deps              # Install dependencies
+make proto            # Generate protobuf files
+
+# 3. Development
+make dev              # Start with hot reload
+make test             # Run tests
+make lint             # Check code quality
+
+# 4. Production
+make docker-build     # Build Docker image
+make docker-run       # Run with Docker Compose
+```
+
+### **Expected Output**
+```
+🚀 Go gRPC Project Generator
+===============================
+✅ All required tools are available
+
+📋 Configuration:
+  Output Directory: ./user-service
+  Module Name: github.com/example/user-service
+  Service Name: user
+  Go Version: 1.21
+  HTTP Port: 8080
+  gRPC Port: 50051
+
+📁 Creating directory structure...
+📦 Generating go.mod...
+📋 Generating Protocol Buffer files...
+🏗️  Generating domain layer...
+🌐 Generating gRPC server adapter...
+🐳 Generating Docker files...
+⚙️  Generating Makefile...
+
+🎉 Project generated successfully!
+
+Next steps:
+  1. cd ./user-service
+  2. make deps               # Install dependencies
+  3. make proto              # Generate protobuf files
+  4. make run                # Run the service
+
+Happy coding! 🚀
+```
+
+---
