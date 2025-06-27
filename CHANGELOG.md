@@ -1,6 +1,6 @@
 ## [1.0.1] - 2025-06-27
 
-- **fix(cleanup)**: Corrección en limpieza de permisos
+- **fix(cleanup)**: Permission cleanup correction
 ### ✨ Feat
 - **feat(scripts)**: Added `auto-commit.sh` script for automatic commits with detailed change analysis
 - **feat(node)**: Added `clean-node-versions.sh` script to clean Node.js versions and keep only LTS
@@ -8,8 +8,8 @@
 
 ## [Unreleased]
 
-### 📝 Pendiente
-- Próximos cambios aparecerán aquí
+### 📝 Pending
+- Upcoming changes will appear here
 
 ---
 
@@ -115,106 +115,106 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **feat(error-handling)**: Robust error handling with return codes
 - **feat(help)**: Complete help system with examples
 
-### 🎨 Mejoras de UX
-- **feat(ui)**: Uso consistente de emojis para mejor legibilidad
-- **feat(ui)**: Códigos de color estandardizados (rojo=error, verde=éxito, azul=info, amarillo=warning)
-- **feat(feedback)**: Mensajes informativos detallados durante cada operación
-- **feat(progress)**: Indicadores de progreso para operaciones largas
-- **feat(validation)**: Verificación inmediata de instalaciones exitosas
+### 🎨 UX Improvements
+- **feat(ui)**: Consistent use of emojis for better readability
+- **feat(ui)**: Standardized color codes (red=error, green=success, blue=info, yellow=warning)
+- **feat(feedback)**: Detailed informative messages during each operation
+- **feat(progress)**: Progress indicators for long operations
+- **feat(validation)**: Immediate verification of successful installations
 
-### 📚 Documentación
-- **docs(readme)**: Documentación técnica completa con ejemplos de uso
-- **docs(examples)**: 8 casos de uso prácticos con código ejecutable
-- **docs(reference)**: Guía de referencia rápida para consulta diaria
-- **docs(architecture)**: Diagramas de estructura de directorios
-- **docs(troubleshooting)**: Sección completa de solución de problemas
-- **docs(compatibility)**: Tabla de compatibilidad detallada
+### 📚 Documentation
+- **docs(readme)**: Complete technical documentation with usage examples
+- **docs(examples)**: 8 practical use cases with executable code
+- **docs(reference)**: Quick reference guide for daily consultation
+- **docs(architecture)**: Directory structure diagrams
+- **docs(troubleshooting)**: Complete troubleshooting section
+- **docs(compatibility)**: Detailed compatibility table
 
-### 🔐 Seguridad
-- **security**: Uso de `set -euo pipefail` en todos los scripts
-- **security**: Validación de entrada en todos los parámetros
-- **security**: Verificación de existencia de comandos antes de uso
-- **security**: Backup automático antes de modificar archivos de configuración
-- **security**: Uso seguro de `sudo` solo cuando es necesario
+### 🔐 Security
+- **security**: Use of `set -euo pipefail` in all scripts
+- **security**: Input validation on all parameters
+- **security**: Command existence verification before use
+- **security**: Automatic backup before modifying configuration files
+- **security**: Safe use of `sudo` only when necessary
 
 ### ⚡ Performance
-- **perf**: Uso de `|| true` para evitar fallos innecesarios
-- **perf**: Verificaciones de existencia antes de operaciones costosas
-- **perf**: Descarga paralela en instalaciones cuando es posible
-- **perf**: Limpieza selectiva en lugar de eliminación completa cuando es apropiado
+- **perf**: Use of `|| true` to avoid unnecessary failures
+- **perf**: Existence checks before expensive operations
+- **perf**: Parallel downloads in installations when possible
+- **perf**: Selective cleanup instead of complete removal when appropriate
 
 ### 🧪 Testing & Validation
-- **test**: Verificación automática de instalación en `setup-go-version-manager.sh`
-- **test**: Comando `status` para validación completa del sistema
-- **test**: Verificación de variables de entorno en cada script
-- **test**: Validación de permisos antes de operaciones críticas
+- **test**: Automatic installation verification in `setup-go-version-manager.sh`
+- **test**: `status` command for complete system validation
+- **test**: Environment variable verification in each script
+- **test**: Permission validation before critical operations
 
 ---
 
-## Estructura de Versiones
+## Version Structure
 
-Este proyecto sigue [Versionado Semántico](https://semver.org/):
+This project follows [Semantic Versioning](https://semver.org/):
 
-- **MAJOR**: Cambios incompatibles en la API
-- **MINOR**: Nuevas funcionalidades compatibles hacia atrás
-- **PATCH**: Correcciones de bugs compatibles hacia atrás
+- **MAJOR**: Incompatible API changes
+- **MINOR**: New backwards-compatible functionality
+- **PATCH**: Backwards-compatible bug fixes
 
-## Tipos de Commits
+## Commit Types
 
-Seguimos [Conventional Commits](https://www.conventionalcommits.org/):
+We follow [Conventional Commits](https://www.conventionalcommits.org/):
 
-- **feat**: Nueva funcionalidad
-- **fix**: Corrección de bug
-- **docs**: Cambios en documentación
-- **style**: Cambios de formato (espacios, punto y coma, etc.)
-- **refactor**: Refactorización de código
-- **perf**: Mejoras de performance
-- **test**: Añadir o corregir tests
-- **chore**: Cambios en el proceso de build o herramientas auxiliares
-- **security**: Mejoras de seguridad
+- **feat**: New functionality
+- **fix**: Bug fix
+- **docs**: Documentation changes
+- **style**: Format changes (spaces, semicolons, etc.)
+- **refactor**: Code refactoring
+- **perf**: Performance improvements
+- **test**: Add or fix tests
+- **chore**: Build process or auxiliary tool changes
+- **security**: Security improvements
 
-## Scopes Utilizados
+## Used Scopes
 
-- **core**: Funcionalidad principal del sistema
-- **go**: Específico para gestión de Go
-- **node**: Específico para gestión de Node.js
-- **docs**: Documentación
-- **config**: Configuración y variables de entorno
-- **ui**: Interfaz de usuario y UX
-- **install**: Procesos de instalación
-- **cleanup**: Procesos de limpieza
-- **validation**: Validaciones y verificaciones
-- **backup**: Funciones de backup y respaldo
-- **project**: Funcionalidades por proyecto
-
----
-
-## Próximas Versiones Planificadas
-
-### [1.1.0] - Pendiente
-- **feat(go)**: Soporte para GoLand y VS Code integration
-- **feat(node)**: Gestión automática de versiones de Node.js por proyecto
-- **feat(ui)**: Interfaz interactiva para selección de versiones
-- **feat(config)**: Configuración centralizada en archivo JSON/YAML
-
-### [1.0.1] - Pendiente
-- **fix**: Correcciones menores basadas en feedback de usuarios
-- **docs**: Mejoras en documentación basadas en preguntas frecuentes
-- **perf**: Optimizaciones de velocidad en scripts de limpieza
+- **core**: Main system functionality
+- **go**: Specific for Go management
+- **node**: Specific for Node.js management
+- **docs**: Documentation
+- **config**: Configuration and environment variables
+- **ui**: User interface and UX
+- **install**: Installation processes
+- **cleanup**: Cleanup processes
+- **validation**: Validations and verifications
+- **backup**: Backup and restore functions
+- **project**: Project-specific functionalities
 
 ---
 
-## Información de Desarrollo
+## Planned Future Versions
 
-- **Autor**: Desarrollado para gestión eficiente de runtimes de desarrollo
-- **Plataforma**: macOS (Intel y Apple Silicon)
-- **Shell**: Bash compatible con Zsh
-- **Dependencias**: curl, tar, brew (opcional), git (opcional)
-- **Licencia**: Uso libre para desarrollo
+### [1.1.0] - Pending
+- **feat(go)**: Support for GoLand and VS Code integration
+- **feat(node)**: Automatic Node.js version management per project
+- **feat(ui)**: Interactive interface for version selection
+- **feat(config)**: Centralized configuration in JSON/YAML file
+
+### [1.0.1] - Pending
+- **fix**: Minor fixes based on user feedback
+- **docs**: Documentation improvements based on frequently asked questions
+- **perf**: Speed optimizations in cleanup scripts
 
 ---
 
-## Enlaces Útiles
+## Development Information
+
+- **Author**: Developed for efficient development runtime management
+- **Platform**: macOS (Intel and Apple Silicon)
+- **Shell**: Bash compatible with Zsh
+- **Dependencies**: curl, tar, brew (optional), git (optional)
+- **License**: Free for development use
+
+---
+
+## Useful Links
 
 - [Conventional Commits](https://www.conventionalcommits.org/)
 - [Keep a Changelog](https://keepachangelog.com/)
