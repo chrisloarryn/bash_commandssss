@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # changelog-manager.sh
 #
-# Script para gestionar el CHANGELOG.md siguiendo Conventional Commits
-# Permite añadir entradas de manera consistente y automatizada
+# Script to manage CHANGELOG.md following Conventional Commits
+# Allows adding entries consistently and automatically
 
 set -euo pipefail
 
-# Colores
+# Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -14,39 +14,39 @@ BLUE='\033[0;34m'
 PURPLE='\033[0;35m'
 NC='\033[0m' # No Color
 
-# Archivo del changelog
+# Changelog file
 CHANGELOG_FILE="CHANGELOG.md"
 VERSION_FILE=".version"
 
-# Tipos de commit válidos
+# Valid commit types
 VALID_TYPES=("feat" "fix" "docs" "style" "refactor" "perf" "test" "chore" "security")
 
-# Scopes válidos para este proyecto
+# Valid scopes for this project
 VALID_SCOPES=("core" "go" "node" "docs" "config" "ui" "install" "cleanup" "validation" "backup" "project")
 
-# Función para mostrar ayuda
+# Function to show help
 show_help() {
     echo -e "${BLUE}📝 Changelog Manager${NC}"
     echo ""
-    echo "Uso: $0 [comando] [argumentos]"
+    echo "Usage: $0 [command] [arguments]"
     echo ""
-    echo "Comandos disponibles:"
-    echo "  add <type> <scope> <description>  Añadir nueva entrada al changelog"
-    echo "  release <version>                 Crear nueva versión"
-    echo "  show                             Mostrar última versión"
-    echo "  validate                         Validar formato del changelog"
-    echo "  help                             Mostrar esta ayuda"
+    echo "Available commands:"
+    echo "  add <type> <scope> <description>  Add new entry to changelog"
+    echo "  release <version>                 Create new version"
+    echo "  show                             Show latest version"
+    echo "  validate                         Validate changelog format"
+    echo "  help                             Show this help"
     echo ""
-    echo "Tipos válidos:"
-    echo "  feat      Nueva funcionalidad"
-    echo "  fix       Corrección de bug"
-    echo "  docs      Cambios en documentación"
-    echo "  style     Cambios de formato"
-    echo "  refactor  Refactorización de código"
-    echo "  perf      Mejoras de performance"
-    echo "  test      Añadir o corregir tests"
-    echo "  chore     Cambios en build o herramientas"
-    echo "  security  Mejoras de seguridad"
+    echo "Valid types:"
+    echo "  feat      New functionality"
+    echo "  fix       Bug fix"
+    echo "  docs      Documentation changes"
+    echo "  style     Format changes"
+    echo "  refactor  Code refactoring"
+    echo "  perf      Performance improvements"
+    echo "  test      Add or fix tests"
+    echo "  chore     Build or tool changes"
+    echo "  security  Security improvements"
     echo ""
     echo "Scopes válidos:"
     echo "  core, go, node, docs, config, ui, install,"
@@ -80,7 +80,7 @@ validate_scope() {
     return 1
 }
 
-# Función para obtener la versión actual
+# Función para obtener la version current
 get_current_version() {
     if [[ -f "$VERSION_FILE" ]]; then
         cat "$VERSION_FILE"
@@ -89,13 +89,13 @@ get_current_version() {
     fi
 }
 
-# Función para guardar versión
+# Función para guardar version
 save_version() {
     local version="$1"
     echo "$version" > "$VERSION_FILE"
 }
 
-# Función para obtener fecha actual
+# Función para obtener fecha current
 get_date() {
     date +"%Y-%m-%d"
 }
@@ -147,7 +147,7 @@ add_entry() {
     echo -e "${BLUE}📝 Añadiendo entrada:${NC}"
     echo -e "${PURPLE}${emoji} ${entry}${NC}"
     
-    # Leer el changelog actual y buscar la sección [Unreleased]
+    # Leer el changelog current y buscar la sección [Unreleased]
     if [[ -f "$CHANGELOG_FILE" ]]; then
         # Buscar si existe sección [Unreleased]
         if grep -q "\[Unreleased\]" "$CHANGELOG_FILE"; then
@@ -181,7 +181,7 @@ add_entry() {
     fi
 }
 
-# Función para crear nueva versión
+# Función para crear nueva version
 create_release() {
     local new_version="$1"
     local current_version=$(get_current_version)
@@ -198,7 +198,7 @@ create_release() {
     # Crear copia temporal
     local temp_file=$(mktemp)
     
-    # Reemplazar [Unreleased] con la nueva versión
+    # Reemplazar [Unreleased] con la nueva version
     sed "s/\[Unreleased\]/[${new_version}] - ${date}/" "$CHANGELOG_FILE" > "$temp_file"
     
     # Añadir nueva sección [Unreleased] al principio
@@ -212,22 +212,22 @@ create_release() {
         echo ""
         echo "---"
         echo ""
-        tail -n +8 "$temp_file"  # Resto del archivo
+        tail -n +8 "$temp_file"  # Resto del file
     } > "$CHANGELOG_FILE"
     
-    # Guardar nueva versión
+    # Guardar nueva version
     save_version "$new_version"
     
     rm "$temp_file"
     
-    echo -e "${GREEN}✅ Release ${new_version} creado exitosamente${NC}"
+    echo -e "${GREEN}✅ Release ${new_version} created successfully${NC}"
     echo -e "${BLUE}📅 Fecha: ${date}${NC}"
 }
 
-# Función para mostrar la última versión
+# Función para mostrar la latest version
 show_latest() {
     local current_version=$(get_current_version)
-    echo -e "${BLUE}📋 Versión actual: ${current_version}${NC}"
+    echo -e "${BLUE}📋 Versión current: ${current_version}${NC}"
     
     if [[ -f "$CHANGELOG_FILE" ]]; then
         echo -e "\n${BLUE}📝 Últimos cambios:${NC}"
@@ -242,7 +242,7 @@ validate_changelog() {
     
     local errors=0
     
-    # Verificar que existe el archivo
+    # Verificar que existe el file
     if [[ ! -f "$CHANGELOG_FILE" ]]; then
         echo -e "${RED}❌ Error: No se encontró $CHANGELOG_FILE${NC}"
         return 1
@@ -256,13 +256,13 @@ validate_changelog() {
     
     # Verificar formato de versiones
     if ! grep -q "\[.*\] - [0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}" "$CHANGELOG_FILE"; then
-        echo -e "${YELLOW}⚠️  Advertencia: Formato de fecha inconsistente${NC}"
+        echo -e "${YELLOW}⚠️  Warning: Formato de fecha inconsistente${NC}"
     fi
     
     # Verificar conventional commits
     local invalid_commits=$(grep -E "^- \*\*" "$CHANGELOG_FILE" | grep -v -E "^- \*\*(feat|fix|docs|style|refactor|perf|test|chore|security)\(" || true)
     if [[ -n "$invalid_commits" ]]; then
-        echo -e "${YELLOW}⚠️  Advertencia: Entradas que no siguen conventional commits:${NC}"
+        echo -e "${YELLOW}⚠️  Warning: Entradas que no siguen conventional commits:${NC}"
         echo "$invalid_commits"
     fi
     
@@ -287,7 +287,7 @@ main() {
             ;;
         "release")
             if [[ -z "${2:-}" ]]; then
-                echo -e "${RED}❌ Error: Especifica una versión${NC}"
+                echo -e "${RED}❌ Error: Especifica una version${NC}"
                 echo "Ejemplo: $0 release 1.1.0"
                 exit 1
             fi

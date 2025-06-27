@@ -1,147 +1,161 @@
-# 📚 Documentación de Scripts de Gestión de Go y Node.js
+# 📚 Go and Node.js Management Scripts Documentation
 
-Esta colección de scripts Bash proporciona una solución completa para gestionar versiones de Go y Node.js en macOS (compatible con Intel y Apple Silicon M1/M2/M3).
+This collection of Bash scripts provides a complete solution for managing Go and Node### **Description**
+Installs and configures the 'g' version manager for Go. Compatible with macOS Intel and Apple Silicon.
+
+### **Features**
+
+#### **'g' manager installation:**
+- 📦 Downloads from official repository
+- 🔄 Alternative method via GitHub if it fails
+- 🛠️ Manual installation as backup
+- 🏗️ Automatically detects architecture (Intel/Apple Silicon)
+
+#### **Automatic configuration:**
+- 📝 Configures environment variables
+- 🛤️ Updates PATH in `.zshrc` and `.bash_profile`
+- 🐹 Installs latest Go version
+- 📖 Creates help scriptmacOS (compatible with Intel and Apple Silicon M1/M2/M3).
 
 ---
 
-## 📋 Índice de Scripts
+## 📋 Script Index
 
-1. [refresh-dev-runtimes.sh](#refresh-dev-runtimessh) - Limpieza e instalación automática
-2. [deep-clean-go.sh](#deep-clean-gosh) - Limpieza profunda de Go
-3. [setup-go-version-manager.sh](#setup-go-version-managersh) - Instalación del gestor de versiones
-4. [go-version-switcher.sh](#go-version-switchersh) - Gestión avanzada de versiones
-5. [auto-commit.sh](#auto-commitsh) - Commits automáticos con análisis inteligente
-6. [clean-node-versions.sh](#clean-node-versionssh) - Limpieza de versiones de Node.js
-7. [clean-node-modules.sh](#clean-node-modulessh) - Eliminación de node_modules
-8. [changelog-manager.sh](#changelog-managersh) - Gestión automatizada de changelog
-5. [changelog-manager.sh](#changelog-managersh) - Gestión automatizada del changelog
+1. [refresh-dev-runtimes.sh](#refresh-dev-runtimessh) - Automatic cleanup and installation
+2. [deep-clean-go.sh](#deep-clean-gosh) - Deep Go cleanup
+3. [setup-go-version-manager.sh](#setup-go-version-managersh) - Version manager installation
+4. [go-version-switcher.sh](#go-version-switchersh) - Advanced version management
+5. [auto-commit.sh](#auto-commitsh) - Automatic commits with intelligent analysis
+6. [clean-node-versions.sh](#clean-node-versionssh) - Node.js version cleanup
+7. [clean-node-modules.sh](#clean-node-modulessh) - Node_modules removal
+8. [changelog-manager.sh](#changelog-managersh) - Automated changelog management
 
 ---
 
 ## 🚀 `refresh-dev-runtimes.sh`
 
-### **Descripción**
-Script principal que elimina todas las versiones existentes de Go y Node.js, e instala la última versión estable de Go y la versión LTS de Node.js.
+### **Description**
+Main script that removes all existing Go and Node.js versions, and installs the latest stable Go version and Node.js LTS version.
 
-### **Funcionalidades**
+### **Features**
 
-#### **Para Go:**
-- ✅ Elimina versiones instaladas con Homebrew
-- ✅ Elimina instalaciones manuales (`/usr/local/go`)
-- ✅ Elimina directorios de usuario (`~/go`, `~/sdk/go*`)
-- ✅ Elimina gestores de versiones (`~/.gvm`, `~/.goenv`)
-- ✅ Limpia caché de Go (`go clean -modcache`, `go clean -cache`)
-- ✅ Instala la última versión estable
-- ✅ Configura PATH automáticamente
+#### **For Go:**
+- ✅ Removes Homebrew installed versions
+- ✅ Removes manual installations (`/usr/local/go`)
+- ✅ Removes user directories (`~/go`, `~/sdk/go*`)
+- ✅ Removes version managers (`~/.gvm`, `~/.goenv`)
+- ✅ Cleans Go cache (`go clean -modcache`, `go clean -cache`)
+- ✅ Installs latest stable version
+- ✅ Configures PATH automatically
 
-#### **Para Node.js:**
-- ✅ Instala/actualiza NVM si no existe
-- ✅ Instala solo la versión LTS de Node.js
-- ✅ Elimina todas las versiones no-LTS
-- ✅ Configura LTS como versión por defecto
+#### **For Node.js:**
+- ✅ Installs/updates NVM if it doesn't exist
+- ✅ Installs only Node.js LTS version
+- ✅ Removes all non-LTS versions
+- ✅ Sets LTS as default version
 
-### **Uso**
+### **Usage**
 ```bash
 ./refresh-dev-runtimes.sh
 ```
 
-### **Requisitos**
-- macOS (Sonoma o superior recomendado)
-- Conexión a internet
-- Permisos de administrador (para `sudo`)
+### **Requirements**
+- macOS (Sonoma or higher recommended)
+- Internet connection
+- Administrator permissions (for `sudo`)
 
-### **Salida esperada**
+### **Expected output**
 ```
-▸ Eliminando Go instalado mediante Homebrew…
-▸ Borrando Go instalado manualmente…
-▸ Instalando última versión estable de Go…
-▸ Configurando PATH para Go…
-▸ Asegurando NVM…
-▸ Instalando versión LTS de Node y eliminando las demás…
-✅ Listo. Abre una nueva terminal o ejecuta «source ~/.zshrc»
+▸ Removing Go installed via Homebrew…
+▸ Deleting manually installed Go…
+▸ Installing latest stable Go version…
+▸ Configuring PATH for Go…
+▸ Ensuring NVM…
+▸ Installing Node LTS version and removing others…
+✅ Done. Open a new terminal or run «source ~/.zshrc»
 ```
 
-### **Variables de entorno configuradas**
+### **Environment variables configured**
 ```bash
-export PATH="/usr/local/go/bin:$PATH"  # Para Go
-# NVM configura automáticamente las variables de Node.js
+export PATH="/usr/local/go/bin:$PATH"  # For Go
+# NVM automatically configures Node.js variables
 ```
 
 ---
 
 ## 🧹 `deep-clean-go.sh`
 
-### **Descripción**
-Script especializado en limpieza completa y agresiva de Go. Maneja permisos especiales y elimina todo rastro de Go del sistema.
+### **Description**
+Script specialized in complete and aggressive Go cleanup. Handles special permissions and removes all traces of Go from the system.
 
-### **Funcionalidades**
+### **Features**
 
-#### **Limpieza de instalaciones:**
-- 🗑️ Limpia caché y módulos con `go clean`
-- 🗑️ Elimina versiones de Homebrew
-- 🗑️ Elimina instalaciones manuales del sistema
-- 🗑️ Corrige permisos de archivos protegidos
-- 🗑️ Elimina gestores de versiones (GVM, GoEnv, g)
+#### **Installation cleanup:**
+- 🗑️ Cleans cache and modules with `go clean`
+- 🗑️ Removes Homebrew versions
+- 🗑️ Removes manual system installations
+- 🗑️ Fixes protected file permissions
+- 🗑️ Removes version managers (GVM, GoEnv, g)
 
-#### **Limpieza de configuración:**
-- 📄 Hace backup de archivos de configuración
-- 🧹 Elimina variables de entorno relacionadas con Go
-- 🔄 Limpia PATH de referencias a Go
+#### **Configuration cleanup:**
+- 📄 Backs up configuration files
+- 🧹 Removes Go-related environment variables
+- 🔄 Cleans PATH of Go references
 
-### **Uso**
+### **Usage**
 ```bash
 ./deep-clean-go.sh
 ```
 
-### **Funciones internas**
+### **Internal functions**
 
 #### `fix_permissions()`
 ```bash
-# Corrige permisos recursivamente
+# Fixes permissions recursively
 fix_permissions() {
     local dir="$1"
     if [[ -d "$dir" ]]; then
-        echo "  Corrigiendo permisos en $dir..."
+        echo "  Fixing permissions in $dir..."
         find "$dir" -type f -exec chmod +w {} \; 2>/dev/null || true
         find "$dir" -type d -exec chmod +w {} \; 2>/dev/null || true
     fi
 }
 ```
 
-### **Directorios limpiados**
-- `/usr/local/go` (instalación manual)
-- `~/go` (GOPATH por defecto)
-- `~/sdk/go*` (instalaciones SDK)
+### **Directories cleaned**
+- `/usr/local/go` (manual installation)
+- `~/go` (default GOPATH)
+- `~/sdk/go*` (SDK installations)
 - `~/.gvm` (Go Version Manager)
 - `~/.goenv` (GoEnv)
 - `~/.g` (g manager)
-- `~/.cache/go-build` (caché de compilación)
-- `~/Library/Caches/go-build` (caché macOS)
+- `~/.cache/go-build` (build cache)
+- `~/Library/Caches/go-build` (macOS cache)
 
-### **Archivos de configuración afectados**
-- `~/.zshrc` (se hace backup automático)
-- `~/.bash_profile` (se hace backup automático)
+### **Configuration files affected**
+- `~/.zshrc` (automatic backup created)
+- `~/.bash_profile` (automatic backup created)
 
-### **Salida esperada**
+### **Expected output**
 ```
-🗑️  Limpieza completa de Go en el sistema...
-▸ Limpiando caché y módulos de Go existentes…
-▸ Eliminando instalaciones de Homebrew…
-▸ Eliminando instalaciones manuales del sistema…
-▸ Eliminando directorios de usuario con permisos especiales…
-▸ Eliminando otros gestores y directorios…
-▸ Limpiando configuración de shell…
-✅ Limpieza completa de Go terminada.
+🗑️  Complete Go system cleanup...
+▸ Cleaning existing Go cache and modules…
+▸ Removing Homebrew installations…
+▸ Removing manual system installations…
+▸ Removing user directories with special permissions…
+▸ Removing other managers and directories…
+▸ Cleaning shell configuration…
+✅ Complete Go cleanup finished.
 ```
 
 ---
 
 ## ⚙️ `setup-go-version-manager.sh`
 
-### **Descripción**
+### **Description**
 Instala y configura el gestor de versiones 'g' para Go. Es compatible con macOS Intel y Apple Silicon.
 
-### **Funcionalidades**
+### **Features**
 
 #### **Instalación del gestor 'g':**
 - 📦 Descarga desde repositorio oficial
@@ -155,24 +169,24 @@ Instala y configura el gestor de versiones 'g' para Go. Es compatible con macOS 
 - 🐹 Instala la última versión de Go
 - 📖 Crea script de ayuda
 
-### **Uso**
+### **Usage**
 ```bash
 ./setup-go-version-manager.sh
 ```
 
-### **Variables de entorno configuradas**
+### **Environment variables configured**
 ```bash
 export GOPATH=$HOME/go
 export GOROOT=$HOME/.g/go
 export PATH=$HOME/.g/bin:$GOROOT/bin:$GOPATH/bin:$PATH
 ```
 
-### **Estructura de directorios creada**
+### **Directory structure created**
 ```
 ~/.g/
-├── bin/g                    # Ejecutable del gestor
-├── go/                      # Versión activa de Go
-├── versions/                # Versiones instaladas
+├── bin/g                    # Manager executable
+├── go/                      # Active Go version
+├── versions/                # Installed versions
 │   ├── 1.21.5/
 │   ├── 1.20.10/
 │   └── ...
@@ -195,7 +209,7 @@ g remove 1.20.10        # Elimina versión específica
 g prune                 # Elimina versiones no utilizadas
 ```
 
-### **Salida esperada**
+### **Expected output**
 ```
 🔧 Instalando gestor de versiones 'g' para Go...
   Detectado: Apple Silicon (M1/M2/M3)
@@ -213,10 +227,10 @@ g prune                 # Elimina versiones no utilizadas
 
 ## 🎛️ `go-version-switcher.sh`
 
-### **Descripción**
-Script avanzado para gestionar múltiples versiones de Go usando el gestor 'g'. Proporciona una interfaz amigable con colores y funcionalidades extra.
+### **Description**
+Script avanzado para gestionar múltiples versiones de Go using the 'g' manager. Provides a user-friendly interface with colors and extra features.
 
-### **Funcionalidades**
+### **Features**
 
 #### **Gestión de versiones:**
 - 📦 Instalación de versiones específicas
@@ -232,7 +246,7 @@ Script avanzado para gestionar múltiples versiones de Go usando el gestor 'g'. 
 - 💾 Información de uso de disco
 - 🚀 Instalación automática de la última versión
 
-### **Uso**
+### **Usage**
 ```bash
 ./go-version-switcher.sh [comando] [argumentos]
 ```
@@ -301,7 +315,7 @@ Muestra información completa del sistema:
 - Versión actual de Go
 - Variables de entorno (GOROOT, GOPATH)
 - Versiones instaladas
-- Uso de disco
+- Disk usage
 
 ### **Archivo de configuración por proyecto**
 ```bash
@@ -344,10 +358,10 @@ go version go1.21.5 darwin/amd64
 
 ## 📝 `changelog-manager.sh`
 
-### **Descripción**
+### **Description**
 Script para gestionar el CHANGELOG.md siguiendo las convenciones de Conventional Commits y Semantic Versioning. Automatiza la creación de entradas consistentes y la gestión de versiones.
 
-### **Funcionalidades**
+### **Features**
 
 #### **Gestión de entradas:**
 - ✅ Validación de tipos de commit según Conventional Commits
@@ -366,7 +380,7 @@ Script para gestionar el CHANGELOG.md siguiendo las convenciones de Conventional
 - ✅ Verificación de estructura y convenciones
 - ✅ Detección de entradas mal formateadas
 
-### **Uso**
+### **Usage**
 ```bash
 ./changelog-manager.sh [comando] [argumentos]
 ```
@@ -377,7 +391,7 @@ Script para gestionar el CHANGELOG.md siguiendo las convenciones de Conventional
 ```bash
 ./changelog-manager.sh add feat go 'Soporte para Go 1.22'
 ./changelog-manager.sh add fix cleanup 'Corrección en limpieza de permisos'
-./changelog-manager.sh add docs readme 'Actualización de documentación'
+./changelog-manager.sh add docs readme 'Actualización de documentation'
 ```
 
 #### **Gestión de versiones:**
@@ -390,7 +404,7 @@ Script para gestionar el CHANGELOG.md siguiendo las convenciones de Conventional
 ### **Tipos de commit válidos**
 - **feat**: Nueva funcionalidad
 - **fix**: Corrección de bug
-- **docs**: Cambios en documentación
+- **docs**: Cambios en documentation
 - **style**: Cambios de formato
 - **refactor**: Refactorización de código
 - **perf**: Mejoras de performance
@@ -447,7 +461,7 @@ Validan que los tipos y scopes estén en las listas permitidas del proyecto.
 add_entry() {
     local type="$1"     # feat, fix, docs, etc.
     local scope="$2"    # go, node, docs, etc.
-    local description="$3"  # Descripción del cambio
+    local description="$3"  # Change description
     
     # Validación y formateo automático
     # Inserción en sección [Unreleased]
@@ -475,7 +489,7 @@ git commit -m "chore: Release 1.1.0"
 git tag v1.1.0
 ```
 
-### **Salida esperada**
+### **Expected output**
 
 #### Comando `add`:
 ```
@@ -655,10 +669,10 @@ Para problemas o mejoras, revisa:
 
 ## 🤖 `auto-commit.sh`
 
-### **Descripción**
+### **Description**
 Script inteligente para realizar commits automáticos con análisis detallado de cambios. Genera mensajes siguiendo Conventional Commits basándose en los archivos modificados.
 
-### **Funcionalidades**
+### **Features**
 
 #### **Análisis inteligente de cambios:**
 - 🔍 Detección automática de tipos de cambio (feat, fix, docs, etc.)
@@ -672,7 +686,7 @@ Script inteligente para realizar commits automáticos con análisis detallado de
 - 🎨 Interfaz con colores adaptativa según el OS
 - 🔒 Validación de repositorio Git antes de ejecutar
 
-### **Uso**
+### **Usage**
 ```bash
 ./auto-commit.sh
 ```
@@ -686,8 +700,8 @@ Script inteligente para realizar commits automáticos con análisis detallado de
 6. Opcionalmente hace push al repositorio remoto
 
 ### **Tipos de commit detectados automáticamente**
-- **feat**: Nuevos archivos .sh, funcionalidades
-- **docs**: Archivos .md, documentación
+- **feat**: New .sh files, features
+- **docs**: Archivos .md, documentation
 - **fix**: Archivos con "fix" o "bug" en el nombre
 - **config**: Archivos .json, .yaml, .yml
 - **test**: Archivos con "test" o "spec"
@@ -701,10 +715,10 @@ Script inteligente para realizar commits automáticos con análisis detallado de
 
 ## 🧹 `clean-node-versions.sh`
 
-### **Descripción**
+### **Description**
 Script especializado para eliminar todas las versiones de Node.js instaladas con NVM y mantener solo la versión LTS más reciente.
 
-### **Funcionalidades**
+### **Features**
 
 #### **Gestión de NVM:**
 - 🔍 Detección automática de NVM estándar y nvm-windows
@@ -718,7 +732,7 @@ Script especializado para eliminar todas las versiones de Node.js instaladas con
 - 🧹 Limpieza de caché de npm en múltiples ubicaciones
 - ✅ Configuración automática como versión por defecto
 
-### **Uso**
+### **Usage**
 ```bash
 ./clean-node-versions.sh
 ```
@@ -743,10 +757,10 @@ Script especializado para eliminar todas las versiones de Node.js instaladas con
 
 ## 🗂️ `clean-node-modules.sh`
 
-### **Descripción**
+### **Description**
 Script potente para buscar y eliminar todos los directorios `node_modules` del sistema, liberando espacio en disco significativo.
 
-### **Funcionalidades**
+### **Features**
 
 #### **Búsqueda inteligente:**
 - 🔍 Búsqueda recursiva con límite de profundidad configurable
@@ -760,7 +774,7 @@ Script potente para buscar y eliminar todos los directorios `node_modules` del s
 - 📂 **Path específico**: Buscar solo en directorio especificado
 - 🚀 **Completo**: Eliminación automática en directorios estándar
 
-### **Uso**
+### **Usage**
 ```bash
 # Búsqueda completa y eliminación
 ./clean-node-modules.sh
@@ -797,17 +811,17 @@ Script potente para buscar y eliminar todos los directorios `node_modules` del s
 ### **Características de seguridad**
 - 🔒 Confirmación obligatoria antes de eliminación masiva
 - 💾 Cálculo y mostrado de espacio a liberar
-- 🔧 Uso de `sudo` automático cuando es necesario (Unix)
+- 🔧 Automatic use of `sudo` when necessary (Unix)
 - ⚠️ Avisos claros sobre operaciones destructivas
 
 ---
 
 ## 📝 `changelog-manager.sh`
 
-### **Descripción**
+### **Description**
 Sistema automatizado para gestionar el changelog del proyecto siguiendo las convenciones de Keep a Changelog y Conventional Commits.
 
-### **Funcionalidades**
+### **Features**
 
 #### **Gestión de entradas:**
 - ➕ Añadir entradas categorizadas automáticamente
@@ -821,12 +835,12 @@ Sistema automatizado para gestionar el changelog del proyecto siguiendo las conv
 - 📊 **Semantic Versioning** para releases
 - 🎨 Emojis categorizados por tipo de cambio
 
-### **Uso**
+### **Usage**
 ```bash
 # Añadir nueva entrada
 ./changelog-manager.sh add feat scripts 'Nueva funcionalidad'
 ./changelog-manager.sh add fix go 'Corregido problema de permisos'
-./changelog-manager.sh add docs readme 'Actualizada documentación'
+./changelog-manager.sh add docs readme 'Actualizada documentation'
 
 # Crear nueva release
 ./changelog-manager.sh release 1.1.0
@@ -842,11 +856,11 @@ Sistema automatizado para gestionar el changelog del proyecto siguiendo las conv
 ```
 
 ### **Tipos de commit soportados**
-| Tipo | Emoji | Categoría | Descripción |
+| Tipo | Emoji | Categoría | Description |
 |------|-------|-----------|-------------|
 | `feat` | ✨ | Feat | Nueva funcionalidad |
 | `fix` | 🐛 | Fixed | Corrección de bug |
-| `docs` | 📚 | Documentation | Cambios en documentación |
+| `docs` | 📚 | Documentation | Cambios en documentation |
 | `style` | 🎨 | Style | Formateo, espacios |
 | `refactor` | ♻️ | Refactor | Refactorización |
 | `perf` | ⚡ | Performance | Mejoras de rendimiento |
@@ -879,15 +893,15 @@ Todos los scripts han sido actualizados para ser completamente compatibles con m
 | File cleanup | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Changelog | ✅ | ✅ | ✅ | ✅ | ✅ |
 
-### **Adaptaciones por sistema**
-- **Detección automática** del sistema operativo
-- **Rutas específicas** según el OS
-- **Comandos adaptativos** para cada plataforma
-- **Códigos de color** apropiados para cada terminal
-- **Gestores de paquetes** específicos (Homebrew, apt, chocolatey)
+### **System adaptations**
+- **Automatic detection** of operating system
+- **OS-specific paths** according to the OS
+- **Adaptive commands** for each platform
+- **Appropriate color codes** for each terminal
+- **Platform-specific package managers** (Homebrew, apt, chocolatey)
 
-### **Notas especiales para Windows**
-- ⚠️ NVM: Se recomienda usar nvm-windows o WSL
-- 🎨 Colores: Simplificados para mayor compatibilidad
-- 📂 Rutas: Soporte para `/c/` style paths (Git Bash)
-- 🔧 PowerShell: Comandos alternativos cuando están disponibles
+### **Special notes for Windows**
+- ⚠️ NVM: It is recommended to use nvm-windows or WSL
+- 🎨 Colors: Simplified for better compatibility
+- 📂 Paths: Support for `/c/` style paths (Git Bash)
+- 🔧 PowerShell: Alternative commands when available

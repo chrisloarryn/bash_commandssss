@@ -1,103 +1,103 @@
-# 🎯 Ejemplos Prácticos de Uso
+# 🎯 Practical Usage Examples
 
-Esta guía muestra ejemplos prácticos de cómo usar los scripts de gestión de Go y Node.js en situaciones reales.
+This guide shows practical examples of how to use Go and Node.js management scripts in real situations.
 
 ---
 
-## 🚀 Caso 1: Configuración inicial desde cero
+## 🚀 Case 1: Initial setup from scratch
 
-### **Situación:** Nuevo Mac, necesitas configurar Go y Node.js
+### **Situation:** New Mac, you need to set up Go and Node.js
 
 ```bash
-# 1. Clonar o descargar los scripts
-git clone <tu-repo> ~/scripts
+# 1. Clone or download the scripts
+git clone <your-repo> ~/scripts
 
-# 2. Dar permisos de ejecución
+# 2. Give execution permissions
 chmod +x ~/scripts/*.sh
 
-# 3. Limpieza inicial (opcional, si ya tienes Go/Node instalado)
+# 3. Initial cleanup (optional, if you already have Go/Node installed)
 ~/scripts/deep-clean-go.sh
 
-# 4. Instalación completa automática
+# 4. Complete automatic installation
 ~/scripts/refresh-dev-runtimes.sh
 
-# 5. Instalar gestor de versiones para Go
+# 5. Install version manager for Go
 ~/scripts/setup-go-version-manager.sh
 
-# 6. Recargar configuración
+# 6. Reload configuration
 source ~/.zshrc
 
-# 7. Verificar instalación
+# 7. Verify installation
 ~/scripts/go-version-switcher.sh status
 go version
 node --version
 npm --version
 ```
 
-**Resultado esperado:**
-- ✅ Go última versión instalada
-- ✅ Node.js LTS instalada
-- ✅ Gestor de versiones 'g' configurado
-- ✅ PATH y variables configuradas
+**Expected result:**
+- ✅ Go latest version installed
+- ✅ Node.js LTS installed
+- ✅ Version manager 'g' configured
+- ✅ PATH and variables configured
 
 ---
 
-## 🔄 Caso 2: Gestión de múltiples proyectos
+## 🔄 Case 2: Managing multiple projects
 
-### **Situación:** Tienes proyectos con diferentes versiones de Go
+### **Situation:** You have projects with different Go versions
 
-#### **Proyecto Legacy (Go 1.20)**
+#### **Legacy Project (Go 1.20)**
 ```bash
-cd ~/proyectos/legacy-api
+cd ~/projects/legacy-api
 
-# Instalar Go 1.20.10 si no está
+# Install Go 1.20.10 if not present
 ~/scripts/go-version-switcher.sh install 1.20.10
 
-# Configurar proyecto para usar Go 1.20.10
+# Configure project to use Go 1.20.10
 ~/scripts/go-version-switcher.sh project 1.20.10
 
-# Verificar
-go version  # debería mostrar go1.20.10
-cat .go-version  # contendrá: 1.20.10
+# Verify
+go version  # should show go1.20.10
+cat .go-version  # will contain: 1.20.10
 ```
 
-#### **Proyecto Nuevo (Go 1.21)**
+#### **New Project (Go 1.21)**
 ```bash
-cd ~/proyectos/nueva-aplicacion
+cd ~/projects/new-application
 
-# Instalar Go 1.21.5 si no está
+# Install Go 1.21.5 if not present
 ~/scripts/go-version-switcher.sh install 1.21.5
 
-# Configurar proyecto
+# Configure project
 ~/scripts/go-version-switcher.sh project 1.21.5
 
-# Verificar
-go version  # debería mostrar go1.21.5
-cat .go-version  # contendrá: 1.21.5
+# Verify
+go version  # should show go1.21.5
+cat .go-version  # will contain: 1.21.5
 ```
 
-#### **Cambio rápido entre proyectos**
+#### **Quick switching between projects**
 ```bash
-# Cambiar manualmente
-~/scripts/go-version-switcher.sh use 1.20.10  # Para el proyecto legacy
-~/scripts/go-version-switcher.sh use 1.21.5   # Para el proyecto nuevo
+# Change manually
+~/scripts/go-version-switcher.sh use 1.20.10  # For the legacy project
+~/scripts/go-version-switcher.sh use 1.21.5   # For the new project
 
-# Ver qué versiones tienes instaladas
+# See what versions you have installed
 ~/scripts/go-version-switcher.sh list
 ```
 
 ---
 
-## 🛠️ Caso 3: Resolución de problemas comunes
+## 🛠️ Case 3: Common problem resolution
 
-### **Problema:** Permisos denegados al eliminar Go
+### **Problem:** Permission denied when removing Go
 
 ```bash
-# Síntoma: rm: Permission denied en ~/go/pkg/mod/
-# Solución:
+# Symptom: rm: Permission denied in ~/go/pkg/mod/
+# Solution:
 ~/scripts/deep-clean-go.sh
 
-# Esto automáticamente:
+# This automatically:
 # 1. Corrige permisos
 # 2. Usa sudo cuando es necesario
 # 3. Hace backup de configuraciones

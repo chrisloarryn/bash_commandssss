@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 # setup-go-version-manager.sh
 #
-# Instala y configura 'g' - Un gestor de versiones de Go simple y rápido
-# Compatible con macOS, Linux y Windows (Git Bash/WSL)
+# Installs and configures 'g' - A simple and fast Go version manager
+# Compatible with macOS, Linux and Windows (Git Bash/WSL)
 # 
-# Uso después de la instalación:
-#   g install 1.21.5    # Instala Go 1.21.5
-#   g use 1.21.5         # Cambia a Go 1.21.5
-#   g list               # Lista versiones instaladas
-#   g list-all           # Lista todas las versiones disponibles
+# Usage after installation:
+#   g install 1.21.5    # Install Go 1.21.5
+#   g use 1.21.5         # Switch to Go 1.21.5
+#   g list               # List installed versions
+#   g list-all           # List all available versions
 
 set -euo pipefail
 
-# Detectar sistema operativo
+# Detect operating system
 case "$(uname -s)" in
     Darwin*)    OS="macOS" ;;
     Linux*)     OS="Linux" ;;
@@ -20,34 +20,34 @@ case "$(uname -s)" in
     *)          OS="Unknown" ;;
 esac
 
-echo "🔧 Instalando gestor de versiones 'g' para Go..."
+echo "🔧 Installing 'g' version manager for Go..."
 
-# Detectar arquitectura
+# Detect architecture
 ARCH=$(uname -m)
 if [[ "$ARCH" == "arm64" ]]; then
     if [[ "$OS" == "macOS" ]]; then
-        echo "  Detectado: Apple Silicon (M1/M2/M3)"
+        echo "  Detected: Apple Silicon (M1/M2/M3)"
     else
-        echo "  Detectado: ARM64"
+        echo "  Detected: ARM64"
     fi
 elif [[ "$ARCH" == "x86_64" ]]; then
-    echo "  Detectado: Intel x86_64"
+    echo "  Detected: Intel x86_64"
 else
-    echo "  Detectado: $ARCH en $OS"
+    echo "  Detected: $ARCH on $OS"
 fi
 
-echo -e "\n▸ Descargando e instalando 'g'..."
+echo -e "\n▸ Downloading and installing 'g'..."
 
-# Crear directorio para g si no existe
+# Create directory for g if it doesn't exist
 mkdir -p "$HOME/.g"
 
-# Descargar e instalar g
+# Download and install g
 if curl -sSL https://git.io/g-install | bash -s -- -y; then
-    echo "  ✅ 'g' instalado correctamente"
+    echo "  ✅ 'g' installed successfully"
 else
-    echo "  ❌ Error instalando 'g'. Intentando método alternativo..."
+    echo "  ❌ Error installing 'g'. Trying alternative method..."
     
-    # Método alternativo: clonar desde GitHub
+    # Alternative method: clone from GitHub
     if command -v git >/dev/null 2>&1; then
         cd /tmp
         git clone https://github.com/stefanmaric/g.git
@@ -55,18 +55,18 @@ else
         make install PREFIX="$HOME/.g"
         cd "$HOME"
         rm -rf /tmp/g
-        echo "  ✅ 'g' instalado via GitHub"
+        echo "  ✅ 'g' installed via GitHub"
     else
-        echo "  ❌ Git no está disponible. Instalando manualmente..."
+        echo "  ❌ Git is not available. Installing manually..."
         curl -sSL https://raw.githubusercontent.com/stefanmaric/g/main/bin/g -o "$HOME/.g/bin/g"
         chmod +x "$HOME/.g/bin/g"
-        echo "  ✅ 'g' instalado manualmente"
+        echo "  ✅ 'g' installed manually"
     fi
 fi
 
-echo -e "\n▸ Configurando PATH y variables de entorno..."
+echo -e "\n▸ Configuring PATH and environment variables..."
 
-# Configurar variables de entorno según el sistema
+# Configure environment variables according to system
 if [[ "$OS" == "Windows" ]]; then
   G_CONFIG="
 # === Go Version Manager (g) ===
@@ -85,16 +85,16 @@ export PATH=\$HOME/.g/bin:\$GOROOT/bin:\$GOPATH/bin:\$PATH
   shell_files=("$HOME/.zshrc" "$HOME/.bashrc" "$HOME/.bash_profile")
 fi
 
-# Añadir configuración al primer archivo de shell disponible
+# Add configuration to first available shell file
 config_added=false
 for shell_file in "${shell_files[@]}"; do
   if [[ -f "$shell_file" ]] || [[ "$shell_file" == "${shell_files[0]}" ]]; then
     if ! grep -q "Go Version Manager (g)" "$shell_file" 2>/dev/null; then
       echo "$G_CONFIG" >> "$shell_file"
-      echo "  ✅ Configuración añadida a $shell_file"
+      echo "  ✅ Configuration added to $shell_file"
       config_added=true
     else
-      echo "  ℹ️  Configuración ya existe en $shell_file"
+      echo "  ℹ️  Configuration already exists in $shell_file"
       config_added=true
     fi
     break
@@ -102,56 +102,56 @@ for shell_file in "${shell_files[@]}"; do
 done
 
 if [[ "$config_added" == false ]]; then
-  # Crear archivo de shell por defecto si no existe ninguno
+  # Create default shell file if none exists
   default_shell="${shell_files[0]}"
   echo "$G_CONFIG" > "$default_shell"
-  echo "  ✅ Configuración creada en $default_shell"
+  echo "  ✅ Configuration created in $default_shell"
 fi
 
-# Exportar variables para la sesión actual
+# Export variables for current session
 export GOPATH="$HOME/go"
 export GOROOT="$HOME/.g/go"
 export PATH="$HOME/.g/bin:$GOROOT/bin:$GOPATH/bin:$PATH"
 
-echo -e "\n▸ Instalando la última versión estable de Go..."
+echo -e "\n▸ Installing latest stable Go version..."
 
-# Usar g para instalar la última versión
+# Use g to install latest version
 if "$HOME/.g/bin/g" install latest 2>/dev/null; then
-    echo "  ✅ Go latest instalado correctamente"
+    echo "  ✅ Go latest installed successfully"
 else
-    echo "  ℹ️  Instalando versión específica conocida..."
+    echo "  ℹ️  Installing known specific version..."
     "$HOME/.g/bin/g" install 1.21.5 2>/dev/null || true
 fi
 
-echo -e "\n▸ Creando script de ayuda..."
+echo -e "\n▸ Creating help script..."
 
-# Crear script de ayuda con comandos útiles
+# Create help script with useful commands
 cat > "$HOME/.g/go-help.sh" << 'EOF'
 #!/bin/bash
-# Comandos útiles para el gestor de versiones 'g'
+# Useful commands for the 'g' version manager
 
-echo "🐹 Gestor de versiones de Go - Comandos útiles:"
+echo "🐹 Go Version Manager - Useful commands:"
 echo ""
-echo "📦 Instalación:"
-echo "  g install latest        # Instala la última versión"
-echo "  g install 1.21.5        # Instala versión específica"
-echo "  g install 1.20.x        # Instala la última 1.20.x"
+echo "📦 Installation:"
+echo "  g install latest        # Install latest version"
+echo "  g install 1.21.5        # Install specific version"
+echo "  g install 1.20.x        # Install latest 1.20.x"
 echo ""
-echo "🔄 Cambio de versión:"
-echo "  g use 1.21.5            # Cambia a versión específica"
-echo "  g use latest            # Cambia a la última instalada"
+echo "🔄 Version switching:"
+echo "  g use 1.21.5            # Switch to specific version"
+echo "  g use latest            # Switch to latest installed"
 echo ""
-echo "📋 Información:"
-echo "  g list                  # Lista versiones instaladas"
-echo "  g list-all              # Lista todas las versiones disponibles"
-echo "  g current               # Muestra versión actual"
-echo "  go version              # Confirma versión de Go activa"
+echo "📋 Information:"
+echo "  g list                  # List installed versions"
+echo "  g list-all              # List all available versions"
+echo "  g current               # Show current version"
+echo "  go version              # Confirm active Go version"
 echo ""
-echo "🗑️  Limpieza:"
-echo "  g remove 1.20.10        # Elimina versión específica"
-echo "  g prune                 # Elimina versiones no utilizadas"
+echo "🗑️  Cleanup:"
+echo "  g remove 1.20.10        # Remove specific version"
+echo "  g prune                 # Remove unused versions"
 echo ""
-echo "💡 Ejemplos de uso:"
+echo "💡 Usage examples:"
 echo "  g install 1.21.5 && g use 1.21.5"
 echo "  g list | head -5"
 echo ""
@@ -159,22 +159,22 @@ EOF
 
 chmod +x "$HOME/.g/go-help.sh"
 
-echo -e "\n✅ Instalación completada!"
+echo -e "\n✅ Installation completed!"
 echo ""
-echo "📋 Próximos pasos:"
+echo "📋 Next steps:"
 if [[ "$OS" == "Windows" ]]; then
-  echo "1. Ejecuta: source ~/.bashrc  (o reinicia Git Bash/WSL)"
+  echo "1. Run: source ~/.bashrc  (or restart Git Bash/WSL)"
 else
-  echo "1. Ejecuta: source ~/.zshrc  (o abre una nueva terminal)"
+  echo "1. Run: source ~/.zshrc  (or open a new terminal)"
 fi
-echo "2. Verifica: g --version"
-echo "3. Usa: g list  (para ver versiones instaladas)"
+echo "2. Verify: g --version"
+echo "3. Use: g list  (to see installed versions)"
 echo ""
-echo "💡 Para ver todos los comandos disponibles:"
+echo "💡 To see all available commands:"
 echo "   ~/.g/go-help.sh"
 echo ""
-echo "🚀 Ejemplos rápidos:"
-echo "   g install 1.21.5     # Instalar Go 1.21.5"
-echo "   g use 1.21.5          # Cambiar a Go 1.21.5"
-echo "   g list                # Ver versiones instaladas"
+echo "🚀 Quick examples:"
+echo "   g install 1.21.5     # Install Go 1.21.5"
+echo "   g use 1.21.5          # Switch to Go 1.21.5"
+echo "   g list                # View installed versions"
 echo ""

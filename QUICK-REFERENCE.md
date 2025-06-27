@@ -1,107 +1,107 @@
-# ⚡ Guía de Referencia Rápida
+# ⚡ Quick Reference Guide
 
-## 🎯 Comandos más usados
+## 🎯 Most used commands
 
-### **Instalación inicial**
+### **Initial installation**
 ```bash
 ./setup-go-version-manager.sh
 source ~/.zshrc
 ```
 
-### **Gestión diaria de versiones**
+### **Daily version management**
 ```bash
-# Ver estado
+# View status
 ./go-version-switcher.sh status
 
-# Instalar versión
+# Install version
 ./go-version-switcher.sh install 1.21.5
 
-# Cambiar versión
+# Change version
 ./go-version-switcher.sh use 1.21.5
 
-# Listar versiones
+# List versions
 ./go-version-switcher.sh list
 ```
 
-### **Configuración por proyecto**
+### **Project configuration**
 ```bash
-cd mi-proyecto
+cd my-project
 ./go-version-switcher.sh project 1.21.5
 ```
 
-### **Limpieza y mantenimiento**
+### **Cleanup and maintenance**
 ```bash
-# Limpieza completa
+# Complete cleanup
 ./deep-clean-go.sh
 
-# Limpieza de versiones no usadas
+# Cleanup unused versions
 ./go-version-switcher.sh cleanup
 ```
 
-### **Gestión de changelog**
+### **Changelog management**
 ```bash
-# Añadir nueva entrada
-./changelog-manager.sh add feat go 'Nueva funcionalidad'
+# Add new entry
+./changelog-manager.sh add feat go 'New functionality'
 
-# Crear release
+# Create release
 ./changelog-manager.sh release 1.1.0
 
-# Ver estado actual
+# View current status
 ./changelog-manager.sh show
 ```
 
 ---
 
-## 📂 Estructura de archivos
+## 📂 File structure
 
 ```
 bash_commandssss/
-├── refresh-dev-runtimes.sh      # 🔄 Instalación automática completa
-├── deep-clean-go.sh            # 🧹 Limpieza profunda de Go  
-├── setup-go-version-manager.sh # ⚙️ Instalación del gestor 'g'
-├── go-version-switcher.sh      # 🎛️ Gestión avanzada de versiones
-├── changelog-manager.sh        # 📝 Gestión automatizada de changelog
-├── README.md                   # 📚 Documentación completa
-├── EXAMPLES.md                 # 🎯 Ejemplos prácticos
-├── QUICK-REFERENCE.md          # ⚡ Esta guía
-├── CHANGELOG.md                # 📝 Historial de cambios detallado
-└── .version                    # 🏷️ Archivo de versión actual
+├── refresh-dev-runtimes.sh      # 🔄 Complete automatic installation
+├── deep-clean-go.sh            # 🧹 Deep Go cleanup  
+├── setup-go-version-manager.sh # ⚙️ Manager 'g' installation
+├── go-version-switcher.sh      # 🎛️ Advanced version management
+├── changelog-manager.sh        # 📝 Automated changelog management
+├── README.md                   # 📚 Complete documentation
+├── EXAMPLES.md                 # 🎯 Practical examples
+├── QUICK-REFERENCE.md          # ⚡ This guide
+├── CHANGELOG.md                # 📝 Detailed change history
+└── .version                    # 🏷️ Current version file
 ```
 
 ---
 
-## 🚨 Solución rápida de problemas
+## 🚨 Quick troubleshooting
 
-| Problema | Solución |
+| Problem | Solution |
 |----------|----------|
 | `Permission denied` | `./deep-clean-go.sh` |
 | `g: command not found` | `./setup-go-version-manager.sh` |
 | `go: command not found` | `source ~/.zshrc` |
-| Versiones mezcladas | `./deep-clean-go.sh && ./setup-go-version-manager.sh` |
+| Mixed versions | `./deep-clean-go.sh && ./setup-go-version-manager.sh` |
 
 ---
 
-## 📋 Checklist de instalación
+## 📋 Installation checklist
 
-- [ ] Ejecutar `./setup-go-version-manager.sh`
-- [ ] Ejecutar `source ~/.zshrc`
-- [ ] Verificar con `./go-version-switcher.sh status`
-- [ ] Instalar versión necesaria `./go-version-switcher.sh install X.X.X`
-- [ ] Configurar proyecto `./go-version-switcher.sh project X.X.X`
-- [ ] Validar changelog `./changelog-manager.sh validate`
+- [ ] Run `./setup-go-version-manager.sh`
+- [ ] Run `source ~/.zshrc`
+- [ ] Verify with `./go-version-switcher.sh status`
+- [ ] Install needed version `./go-version-switcher.sh install X.X.X`
+- [ ] Configure project `./go-version-switcher.sh project X.X.X`
+- [ ] Validate changelog `./changelog-manager.sh validate`
 
 ---
 
-## 🎨 Alias útiles para .zshrc
+## 🎨 Useful aliases for .zshrc
 
 ```bash
-# Scripts de Go
+# Go scripts
 alias gls='~/path/go-version-switcher.sh list'
 alias gst='~/path/go-version-switcher.sh status'  
 alias guse='~/path/go-version-switcher.sh use'
 alias gproject='~/path/go-version-switcher.sh project'
 
-# Gestión de changelog
+# Changelog management
 alias changelog-add='~/path/changelog-manager.sh add'
 alias changelog-release='~/path/changelog-manager.sh release'
 alias changelog-show='~/path/changelog-manager.sh show'
@@ -109,26 +109,26 @@ alias changelog-show='~/path/changelog-manager.sh show'
 
 ---
 
-## 🔍 Verificación rápida
+## 🔍 Quick verification
 
 ```bash
-# Todo funcionando correctamente si:
-go version                    # Muestra versión
-~/go-version-switcher.sh list # Muestra versiones instaladas
-which go                      # Apunta a ~/.g/go/bin/go
-echo $GOROOT                  # Muestra ~/.g/go
+# Everything working correctly if:
+go version                    # Shows version
+~/go-version-switcher.sh list # Shows installed versions
+which go                      # Points to ~/.g/go/bin/go
+echo $GOROOT                  # Shows ~/.g/go
 ```
 
 ---
 
-## 📞 En caso de emergencia
+## 📞 Emergency case
 
 ```bash
-# Reset completo:
+# Complete reset:
 ./deep-clean-go.sh
 ./setup-go-version-manager.sh
 source ~/.zshrc
 ./go-version-switcher.sh install 1.21.5
 ```
 
-¡Guarda esta referencia para consulta rápida! 🚀
+Save this reference for quick consultation! 🚀

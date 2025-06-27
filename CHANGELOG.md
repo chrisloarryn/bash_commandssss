@@ -1,110 +1,119 @@
+## [1.0.1] - 2025-06-27
+
+- **fix(cleanup)**: Corrección en limpieza de permisos
+### ✨ Feat
+- **feat(scripts)**: Added `auto-commit.sh` script for automatic commits with detailed change analysis
+- **feat(node)**: Added `clean-node-versions.sh` script to clean Node.js versions and keep only LTS
+- **feat(node)**: Added `clean-node-modules.sh` script to remove all node_modules from the system
+
 ## [Unreleased]
 
-### ✨ Feat
-- **feat(scripts)**: Añadido script `auto-commit.sh` para commits automáticos con análisis detallado de cambios
-- **feat(node)**: Añadido script `clean-node-versions.sh` para limpiar versiones de Node.js y mantener solo LTS
-- **feat(node)**: Añadido script `clean-node-modules.sh` para eliminar todos los node_modules del sistema
-- **feat(compatibility)**: Todos los scripts ahora son compatibles con macOS, Linux y Windows (Git Bash/WSL)
-- **feat(docs)**: Añadido sistema de gestión automatizada de changelog con conventional commits
-- **feat(git)**: Análisis inteligente de tipos de cambio en commits con categorización automática
-- **feat(ui)**: Interfaz interactiva para confirmación de operaciones destructivas
-- **feat(cleanup)**: Detección y corrección automática de permisos en operaciones de limpieza
+### 📝 Pendiente
+- Próximos cambios aparecerán aquí
+
+---
+
+- **feat(compatibility)**: All scripts are now compatible with macOS, Linux and Windows (Git Bash/WSL)
+- **feat(docs)**: Added automated changelog management system with conventional commits
+- **feat(git)**: Smart analysis of change types in commits with automatic categorization
+- **feat(ui)**: Interactive interface for confirmation of destructive operations
+- **feat(cleanup)**: Automatic detection and correction of permissions in cleanup operations
 
 ### 🔧 Technical Features
 
 #### `auto-commit.sh`
-- **feat(git)**: Análisis automático de archivos modificados con categorización por tipo y scope
-- **feat(git)**: Generación de mensajes de commit siguiendo Conventional Commits
-- **feat(git)**: Soporte para edición de mensajes de commit con múltiples editores
-- **feat(git)**: Integración con push automático opcional al repositorio remoto
-- **feat(ui)**: Códigos de color adaptativos según el sistema operativo
+- **feat(git)**: Automatic analysis of modified files with categorization by type and scope
+- **feat(git)**: Generation of commit messages following Conventional Commits
+- **feat(git)**: Support for editing commit messages with multiple editors
+- **feat(git)**: Integration with optional automatic push to remote repository
+- **feat(ui)**: Adaptive color codes according to operating system
 
 #### `clean-node-versions.sh`
-- **feat(nvm)**: Soporte para NVM estándar y nvm-windows
-- **feat(node)**: Detección automática de versión LTS más reciente
-- **feat(cleanup)**: Eliminación selectiva manteniendo solo la versión LTS
-- **feat(config)**: Configuración automática de archivos de shell según el OS
+- **feat(nvm)**: Support for standard NVM and nvm-windows
+- **feat(node)**: Automatic detection of latest LTS version
+- **feat(cleanup)**: Selective removal keeping only LTS version
+- **feat(config)**: Automatic configuration of shell files according to OS
 
 #### `clean-node-modules.sh`
-- **feat(search)**: Búsqueda recursiva con límite de profundidad configurable
-- **feat(size)**: Cálculo y visualización de espacio ocupado por cada directorio
-- **feat(interactive)**: Modo interactivo para confirmación individual
-- **feat(dryrun)**: Modo dry-run para previsualizar cambios sin ejecutar
-- **feat(performance)**: Uso de timeout para evitar búsquedas infinitas
+- **feat(search)**: Recursive search with configurable depth limit
+- **feat(size)**: Calculation and visualization of space occupied by each directory
+- **feat(interactive)**: Interactive mode for individual confirmation
+- **feat(dryrun)**: Dry-run mode to preview changes without executing
+- **feat(performance)**: Use of timeout to avoid infinite searches
 
 ### 🌐 Cross-Platform Compatibility
-- **feat(windows)**: Soporte completo para Windows con Git Bash y WSL
-- **feat(macos)**: Optimizaciones específicas para macOS Intel y Apple Silicon
-- **feat(linux)**: Compatibilidad con distribuciones Linux principales
-- **feat(paths)**: Detección automática de rutas según el sistema operativo
-- **feat(colors)**: Códigos de color adaptativos para terminales de Windows
+- **feat(windows)**: Full support for Windows with Git Bash and WSL
+- **feat(macos)**: Specific optimizations for macOS Intel and Apple Silicon
+- **feat(linux)**: Compatibility with major Linux distributions
+- **feat(paths)**: Automatic path detection according to operating system
+- **feat(colors)**: Adaptive color codes for Windows terminals
 
 ### 📚 Documentation Updates
-- **docs(examples)**: Añadidos ejemplos específicos para cada sistema operativo
-- **docs(troubleshooting)**: Sección expandida de solución de problemas multiplataforma
-- **docs(install)**: Instrucciones de instalación específicas por sistema
+- **docs(examples)**: Added specific examples for each operating system
+- **docs(troubleshooting)**: Expanded multiplatform troubleshooting section
+- **docs(install)**: System-specific installation instructions
 
 # 📝 CHANGELOG
 
-Todos los cambios notables en este proyecto serán documentados en este archivo.
+All notable changes to this project will be documented in this file.
 
-El formato está basado en [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-y este proyecto adhiere al [Versionado Semántico](https://semver.org/spec/v2.0.0.html) y [Conventional Commits](https://www.conventionalcommits.org/).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and [Conventional Commits](https://www.conventionalcommits.org/).
 
 ---
 
 ## [1.0.0] - 2025-06-27
 
 ### ✨ Added
-- **feat(core)**: Implementación inicial del sistema completo de gestión de versiones de Go y Node.js
-- **feat(go)**: Script `refresh-dev-runtimes.sh` para instalación automática de Go y Node.js LTS
-- **feat(go)**: Script `deep-clean-go.sh` para limpieza profunda con manejo de permisos especiales
-- **feat(go)**: Script `setup-go-version-manager.sh` para instalación del gestor de versiones 'g'
-- **feat(go)**: Script `go-version-switcher.sh` con interfaz avanzada y colores
-- **feat(docs)**: Documentación completa en `README.md` con especificaciones técnicas detalladas
-- **feat(docs)**: Guía de ejemplos prácticos en `EXAMPLES.md` con casos de uso reales
-- **feat(docs)**: Guía de referencia rápida en `QUICK-REFERENCE.md`
-- **feat(config)**: Configuración automática de variables de entorno (GOPATH, GOROOT, PATH)
-- **feat(compatibility)**: Soporte completo para macOS Intel y Apple Silicon (M1/M2/M3)
+- **feat(core)**: Initial implementation of complete Go and Node.js version management system
+- **feat(go)**: Script `refresh-dev-runtimes.sh` for automatic installation of Go and Node.js LTS
+- **feat(go)**: Script `deep-clean-go.sh` for deep cleanup with special permissions handling
+- **feat(go)**: Script `setup-go-version-manager.sh` for installing 'g' version manager
+- **feat(go)**: Script `go-version-switcher.sh` with advanced interface and colors
+- **feat(docs)**: Complete documentation in `README.md` with detailed technical specifications
+- **feat(docs)**: Practical examples guide in `EXAMPLES.md` with real use cases
+- **feat(docs)**: Quick reference guide in `QUICK-REFERENCE.md`
+- **feat(config)**: Automatic configuration of environment variables (GOPATH, GOROOT, PATH)
+- **feat(compatibility)**: Full support for macOS Intel and Apple Silicon (M1/M2/M3)
 
-### 🔧 Features Técnicas
+### 🔧 Technical Features
 
 #### `refresh-dev-runtimes.sh`
-- **feat(go)**: Detección automática de versiones de Go instaladas con Homebrew usando regex mejorado
-- **feat(go)**: Eliminación segura de instalaciones manuales con verificación de permisos
-- **feat(go)**: Limpieza de caché con `go clean -modcache` y `go clean -cache`
-- **feat(go)**: Instalación automática con detección de arquitectura (amd64/arm64)
-- **feat(go)**: Manejo de errores con fallback a versión conocida (go1.22.0)
-- **feat(node)**: Instalación de NVM v0.39.7 con verificación de existencia
-- **feat(node)**: Detección automática de versión LTS más reciente
-- **feat(node)**: Eliminación selectiva de versiones no-LTS
-- **feat(config)**: Configuración automática de PATH en `.zshrc`
+- **feat(go)**: Automatic detection of Go versions installed with Homebrew using improved regex
+- **feat(go)**: Safe removal of manual installations with permission verification
+- **feat(go)**: Cache cleanup with `go clean -modcache` and `go clean -cache`
+- **feat(go)**: Automatic installation with architecture detection (amd64/arm64)
+- **feat(go)**: Error handling with fallback to known version (go1.22.0)
+- **feat(node)**: NVM v0.39.7 installation with existence verification
+- **feat(node)**: Automatic detection of latest LTS version
+- **feat(node)**: Selective removal of non-LTS versions
+- **feat(config)**: Automatic PATH configuration in `.zshrc`
 
 #### `deep-clean-go.sh`
-- **feat(cleanup)**: Función `fix_permissions()` para manejo recursivo de permisos
-- **feat(cleanup)**: Limpieza de múltiples ubicaciones de caché de Go
-- **feat(cleanup)**: Eliminación de gestores de versiones (GVM, GoEnv, g)
-- **feat(backup)**: Backup automático de archivos de configuración con timestamp
-- **feat(config)**: Limpieza inteligente de variables de entorno con regex
-- **feat(safety)**: Uso de `|| true` para evitar fallos en operaciones no críticas
+- **feat(cleanup)**: `fix_permissions()` function for recursive permission handling
+- **feat(cleanup)**: Cleanup of multiple Go cache locations
+- **feat(cleanup)**: Removal of version managers (GVM, GoEnv, g)
+- **feat(backup)**: Automatic backup of configuration files with timestamp
+- **feat(config)**: Smart cleanup of environment variables with regex
+- **feat(safety)**: Use of `|| true` to avoid failures in non-critical operations
 
 #### `setup-go-version-manager.sh`
-- **feat(install)**: Tres métodos de instalación con fallback automático
-- **feat(install)**: Detección automática de arquitectura con conversión x86_64 → amd64
-- **feat(config)**: Configuración de variables de entorno para múltiples shells
-- **feat(install)**: Instalación automática de la última versión de Go
-- **feat(docs)**: Creación de script de ayuda con comandos útiles
-- **feat(validation)**: Verificación de instalación exitosa con mensajes informativos
+- **feat(install)**: Three installation methods with automatic fallback
+- **feat(install)**: Automatic architecture detection with x86_64 → amd64 conversion
+- **feat(config)**: Environment variable configuration for multiple shells
+- **feat(install)**: Automatic installation of latest Go version
+- **feat(docs)**: Creation of help script with useful commands
+- **feat(validation)**: Successful installation verification with informative messages
 
 #### `go-version-switcher.sh`
-- **feat(ui)**: Interfaz con colores usando códigos ANSI
-- **feat(commands)**: 10 comandos principales con validación de parámetros
-- **feat(project)**: Soporte para archivos `.go-version` por proyecto
-- **feat(status)**: Comando `status` con información completa del sistema
-- **feat(cleanup)**: Comando `cleanup` para eliminación de versiones no utilizadas
-- **feat(validation)**: Verificación de instalación del gestor 'g' antes de ejecutar
-- **feat(error-handling)**: Manejo robusto de errores con códigos de retorno
-- **feat(help)**: Sistema de ayuda completo con ejemplos
+- **feat(ui)**: Color interface using ANSI codes
+- **feat(commands)**: 10 main commands with parameter validation
+- **feat(project)**: Support for `.go-version` files per project
+- **feat(status)**: `status` command with complete system information
+- **feat(cleanup)**: `cleanup` command for removing unused versions
+- **feat(validation)**: Verification of 'g' manager installation before execution
+- **feat(error-handling)**: Robust error handling with return codes
+- **feat(help)**: Complete help system with examples
 
 ### 🎨 Mejoras de UX
 - **feat(ui)**: Uso consistente de emojis para mejor legibilidad

@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # auto-commit.sh
 #
-# Script para hacer commit automático con descripción detallada de cambios
-# Compatible con macOS, Linux y Windows (Git Bash/WSL)
-# Genera commits siguiendo Conventional Commits basado en los cambios detectados
+# Script for automatic commits with detailed change descriptions
+# Compatible with macOS, Linux and Windows (Git Bash/WSL)
+# Generates commits following Conventional Commits based on detected changes
 
 set -euo pipefail
 
-# Detectar sistema operativo
+# Detect operating system
 case "$(uname -s)" in
     Darwin*)    OS="macOS" ;;
     Linux*)     OS="Linux" ;;
@@ -15,9 +15,9 @@ case "$(uname -s)" in
     *)          OS="Unknown" ;;
 esac
 
-# Colores para output
+# Colors for output
 if [[ "$OS" == "Windows" ]]; then
-    # Windows puede tener problemas con colores, usar versión simplificada
+    # Windows may have issues with colors, use simplified version
     RED='[ERROR]'
     GREEN='[SUCCESS]'
     YELLOW='[WARNING]'
@@ -31,15 +31,15 @@ else
     NC='\033[0m'
 fi
 
-echo -e "${BLUE}🚀 Auto-commit script - Detectado: $OS${NC}"
+echo -e "${BLUE}🚀 Auto-commit script - Detected: $OS${NC}"
 
-# Verificar que estamos en un repositorio git
+# Verify that we are in a git repository
 if ! git rev-parse --git-dir > /dev/null 2>&1; then
-    echo -e "${RED}❌ Error: No estás en un repositorio Git${NC}"
+    echo -e "${RED}❌ Error: You are not in a Git repository${NC}"
     exit 1
 fi
 
-# Función para analizar tipo de archivo y sugerir scope
+# Function to analyze file type and suggest scope
 get_file_scope() {
     local file="$1"
     case "$file" in
@@ -56,13 +56,13 @@ get_file_scope() {
     esac
 }
 
-# Función para analizar tipo de cambio
+# Function to analyze change type
 analyze_change_type() {
     local file="$1"
     local status="$2"
     
     case "$status" in
-        "A")    # Archivo añadido
+        "A")    # Added file
             if [[ "$file" == *.md ]]; then
                 echo "docs"
             elif [[ "$file" == *.sh ]]; then
@@ -71,7 +71,7 @@ analyze_change_type() {
                 echo "feat"
             fi
             ;;
-        "M")    # Archivo modificado
+        "M")    # Modified file
             if [[ "$file" == *"test"* ]] || [[ "$file" == *"spec"* ]]; then
                 echo "test"
             elif [[ "$file" == *.md ]]; then
@@ -82,29 +82,29 @@ analyze_change_type() {
                 echo "feat"
             fi
             ;;
-        "D")    # Archivo eliminado
+        "D")    # Deleted file
             echo "remove"
             ;;
-        "R")    # Archivo renombrado
+        "R")    # Renamed file
             echo "refactor"
             ;;
         *)      echo "chore" ;;
     esac
 }
 
-# Obtener archivos modificados
-echo -e "\n${BLUE}📋 Analizando cambios...${NC}"
+# Get modified files
+echo -e "\n${BLUE}📋 Analyzing changes...${NC}"
 
-# Verificar si hay cambios staged
+# Check if there are staged changes
 if ! git diff --cached --quiet; then
-    echo -e "${BLUE}📦 Cambios en staging area:${NC}"
+    echo -e "${BLUE}📦 Changes in staging area:${NC}"
     STAGED_FILES=$(git diff --cached --name-status)
 else
-    echo -e "${YELLOW}⚠️  No hay cambios en staging area. Añadiendo archivos modificados...${NC}"
+    echo -e "${YELLOW}⚠️  No changes in staging area. Adding modified files...${NC}"
     
-    # Añadir archivos modificados automáticamente
+    # Add modified files automatically
     if git diff --quiet; then
-        echo -e "${YELLOW}ℹ️  No hay cambios para commitear${NC}"
+        echo -e "${YELLOW}ℹ️  No changes to commit${NC}"
         exit 0
     fi
     
@@ -114,25 +114,25 @@ fi
 
 echo "$STAGED_FILES"
 
-# Analizar cambios y generar commit message
+# Analyze changes and generate commit message
 declare -A changes_by_type
 declare -A changes_by_scope
 declare -a detailed_changes
 
-echo -e "\n${BLUE}🔍 Analizando tipos de cambios...${NC}"
+echo -e "\n${BLUE}🔍 Analyzing change types...${NC}"
 
 while IFS=$'\t' read -r status file; do
-    # Limpiar el status (puede tener caracteres extra)
+    # Clean the status (may have extra characters)
     status=$(echo "$status" | tr -d ' ')
     
     change_type=$(analyze_change_type "$file" "$status")
     scope=$(get_file_scope "$file")
     
-    # Contar cambios por tipo
+    # Count changes by type
     changes_by_type["$change_type"]=$((${changes_by_type["$change_type"]:-0} + 1))
     changes_by_scope["$scope"]=$((${changes_by_scope["$scope"]:-0} + 1))
     
-    # Generar descripción detallada
+    # Generate detailed description
     case "$status" in
         "A") detailed_changes+=("Added $file") ;;
         "M") detailed_changes+=("Modified $file") ;;
@@ -143,7 +143,7 @@ while IFS=$'\t' read -r status file; do
     
 done <<< "$STAGED_FILES"
 
-# Determinar tipo principal de commit
+# Determine primary commit type
 primary_type="feat"
 max_count=0
 for type in "${!changes_by_type[@]}"; do
@@ -153,7 +153,7 @@ for type in "${!changes_by_type[@]}"; do
     fi
 done
 
-# Determinar scope principal
+# Determine primary scope
 primary_scope="misc"
 max_count=0
 for scope in "${!changes_by_scope[@]}"; do
@@ -163,7 +163,7 @@ for scope in "${!changes_by_scope[@]}"; do
     fi
 done
 
-# Generar resumen de cambios
+# Generate change summary
 total_files=${#detailed_changes[@]}
 change_summary=""
 
@@ -172,7 +172,7 @@ if [[ $total_files -eq 1 ]]; then
 else
     change_summary="Updated $total_files files"
     
-    # Añadir detalles de tipos más comunes
+    # Add details of most common types
     for type in "${!changes_by_type[@]}"; do
         count=${changes_by_type[$type]}
         if [[ $count -gt 1 ]]; then
@@ -181,36 +181,36 @@ else
     done
 fi
 
-# Generar mensaje de commit
+# Generate commit message
 if [[ "$primary_scope" != "misc" ]]; then
     commit_message="$primary_type($primary_scope): $change_summary"
 else
     commit_message="$primary_type: $change_summary"
 fi
 
-# Mostrar resumen al usuario
-echo -e "\n${BLUE}📊 Resumen de cambios:${NC}"
-echo "  Total de archivos: $total_files"
-echo "  Tipo principal: $primary_type"
-echo "  Scope principal: $primary_scope"
+# Show summary to user
+echo -e "\n${BLUE}📊 Change summary:${NC}"
+echo "  Total files: $total_files"
+echo "  Primary type: $primary_type"
+echo "  Primary scope: $primary_scope"
 echo ""
 
-echo -e "${BLUE}📝 Tipos de cambios:${NC}"
+echo -e "${BLUE}📝 Change types:${NC}"
 for type in "${!changes_by_type[@]}"; do
-    echo "  $type: ${changes_by_type[$type]} archivos"
+    echo "  $type: ${changes_by_type[$type]} files"
 done
 
-echo -e "\n${BLUE}📂 Scopes afectados:${NC}"
+echo -e "\n${BLUE}📂 Affected scopes:${NC}"
 for scope in "${!changes_by_scope[@]}"; do
-    echo "  $scope: ${changes_by_scope[$scope]} archivos"
+    echo "  $scope: ${changes_by_scope[$scope]} files"
 done
 
-echo -e "\n${BLUE}📋 Archivos modificados:${NC}"
+echo -e "\n${BLUE}📋 Modified files:${NC}"
 for change in "${detailed_changes[@]}"; do
     echo "  - $change"
 done
 
-# Generar mensaje detallado
+# Generate detailed message
 detailed_message="$commit_message
 
 Changes summary:
@@ -225,7 +225,7 @@ for change in "${detailed_changes[@]}"; do
 - $change"
 done
 
-# Añadir información del sistema
+# Add system information
 detailed_message="$detailed_message
 
 System info:
@@ -233,20 +233,20 @@ System info:
 - Date: $(date '+%Y-%m-%d %H:%M:%S')
 - Git user: $(git config user.name) <$(git config user.email)>"
 
-echo -e "\n${YELLOW}💡 Mensaje de commit propuesto:${NC}"
+echo -e "\n${YELLOW}💡 Proposed commit message:${NC}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "$commit_message"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-# Preguntar al usuario si quiere continuar
-echo -e "\n${BLUE}¿Deseas continuar con este commit? [Y/n/e(dit)]${NC}"
+# Ask user if they want to continue
+echo -e "\n${BLUE}Do you want to continue with this commit? [Y/n/e(dit)]${NC}"
 read -r response
 
 case "$response" in
     [eE])
-        echo -e "${BLUE}✏️  Editando mensaje de commit...${NC}"
+        echo -e "${BLUE}✏️  Editing commit message...${NC}"
         
-        # Crear archivo temporal con el mensaje
+        # Create temporary file with the message
         if [[ "$OS" == "Windows" ]]; then
             temp_file="$(mktemp).txt"
         else
@@ -254,7 +254,7 @@ case "$response" in
         fi
         echo "$detailed_message" > "$temp_file"
         
-        # Abrir editor
+        # Open editor
         if [[ -n "${EDITOR:-}" ]]; then
             "$EDITOR" "$temp_file"
         elif command -v code >/dev/null 2>&1; then
@@ -264,54 +264,54 @@ case "$response" in
         elif command -v vim >/dev/null 2>&1; then
             vim "$temp_file"
         else
-            echo -e "${YELLOW}⚠️  No se encontró editor. Usando mensaje original.${NC}"
+            echo -e "${YELLOW}⚠️  No editor found. Using original message.${NC}"
         fi
         
         detailed_message=$(cat "$temp_file")
         rm -f "$temp_file"
         ;;
     [nN])
-        echo -e "${YELLOW}❌ Commit cancelado${NC}"
+        echo -e "${YELLOW}❌ Commit cancelled${NC}"
         exit 0
         ;;
     *)
-        echo -e "${GREEN}✅ Continuando con el commit...${NC}"
+        echo -e "${GREEN}✅ Continuing with commit...${NC}"
         ;;
 esac
 
-# Realizar el commit
-echo -e "\n${BLUE}🚀 Realizando commit...${NC}"
+# Perform the commit
+echo -e "\n${BLUE}🚀 Performing commit...${NC}"
 
 if git commit -m "$detailed_message"; then
-    echo -e "\n${GREEN}✅ Commit realizado exitosamente!${NC}"
+    echo -e "\n${GREEN}✅ Commit completed successfully!${NC}"
     
-    # Mostrar información del commit
-    echo -e "\n${BLUE}📋 Información del commit:${NC}"
+    # Show commit information
+    echo -e "\n${BLUE}📋 Commit information:${NC}"
     git log -1 --oneline
     
-    # Preguntar si quiere hacer push
-    echo -e "\n${BLUE}¿Deseas hacer push al repositorio remoto? [y/N]${NC}"
+    # Ask if they want to push
+    echo -e "\n${BLUE}Do you want to push to remote repository? [y/N]${NC}"
     read -r push_response
     
     case "$push_response" in
         [yY])
-            echo -e "${BLUE}📤 Haciendo push...${NC}"
+            echo -e "${BLUE}📤 Pushing...${NC}"
             current_branch=$(git branch --show-current)
             
             if git push origin "$current_branch"; then
-                echo -e "${GREEN}✅ Push realizado exitosamente!${NC}"
+                echo -e "${GREEN}✅ Push completed successfully!${NC}"
             else
-                echo -e "${YELLOW}⚠️  Error en push. Puedes hacerlo manualmente con: git push origin $current_branch${NC}"
+                echo -e "${YELLOW}⚠️  Push error. You can do it manually with: git push origin $current_branch${NC}"
             fi
             ;;
         *)
-            echo -e "${BLUE}ℹ️  Push omitido. Puedes hacerlo manualmente más tarde.${NC}"
+            echo -e "${BLUE}ℹ️  Push skipped. You can do it manually later.${NC}"
             ;;
     esac
     
 else
-    echo -e "${RED}❌ Error en el commit${NC}"
+    echo -e "${RED}❌ Commit error${NC}"
     exit 1
 fi
 
-echo -e "\n${GREEN}🎉 Proceso completado!${NC}"
+echo -e "\n${GREEN}🎉 Process completed!${NC}"

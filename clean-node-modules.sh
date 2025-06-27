@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # clean-node-modules.sh
 #
-# Script para limpiar todos los directorios node_modules del sistema
-# Compatible con macOS, Linux y Windows (Git Bash/WSL)
-# Libera espacio en disco eliminando dependencias no necesarias
+# Script to clean all node_modules directories from the system
+# Compatible with macOS, Linux and Windows (Git Bash/WSL)
+# Frees disk space by removing unnecessary dependencies
 
 set -euo pipefail
 
-# Detectar sistema operativo
+# Detect operating system
 case "$(uname -s)" in
     Darwin*)    OS="macOS" ;;
     Linux*)     OS="Linux" ;;
@@ -15,7 +15,7 @@ case "$(uname -s)" in
     *)          OS="Unknown" ;;
 esac
 
-# Configurar colores según OS
+# Configure colors according to OS
 if [[ "$OS" == "Windows" ]]; then
     RED='[ERROR]'
     GREEN='[SUCCESS]'
@@ -30,40 +30,40 @@ else
     NC='\033[0m'
 fi
 
-echo -e "${BLUE}🧹 Node Modules Cleaner - Sistema: $OS${NC}"
+echo -e "${BLUE}🧹 Node Modules Cleaner - System: $OS${NC}"
 
-# Configurar directorios de búsqueda según el sistema operativo
+# Configure search directories according to operating system
 if [[ "$OS" == "Windows" ]]; then
-    # En Windows, buscar en ubicaciones comunes
+    # On Windows, search in common locations
     search_dirs=(
         "$HOME"
         "/c/Users/$USER"
         "/c/Projects"
         "/c/workspace"
-        "/d"  # Si tiene unidad D
+        "/d"  # If D drive exists
     )
     
-    # Comando find para Windows (puede usar find de Git Bash o WSL)
+    # find command for Windows (can use find from Git Bash or WSL)
     FIND_CMD="find"
 else
-    # macOS y Linux
+    # macOS and Linux
     search_dirs=(
         "$HOME"
         "/Users"      # macOS
         "/home"       # Linux
         "/opt"
-        "/var/www"    # Servidores web
-        "/workspace"  # Directorios comunes de desarrollo
+        "/var/www"    # Web servers
+        "/workspace"  # Common development directories
     )
     FIND_CMD="find"
 fi
 
-# Función para formatear tamaño
+# Function to format size
 format_size() {
     local size_bytes="$1"
     
     if [[ "$OS" == "Windows" ]]; then
-        # En Windows, usar cálculo básico
+        # On Windows, use basic calculation
         if [[ $size_bytes -gt 1073741824 ]]; then
             echo "$((size_bytes / 1073741824))GB"
         elif [[ $size_bytes -gt 1048576 ]]; then
@@ -74,11 +74,11 @@ format_size() {
             echo "${size_bytes}B"
         fi
     else
-        # macOS y Linux tienen mejores herramientas
+        # macOS and Linux have better tools
         if command -v numfmt >/dev/null 2>&1; then
             numfmt --to=iec --suffix=B "$size_bytes"
         else
-            # Fallback manual
+            # Manual fallback
             if [[ $size_bytes -gt 1073741824 ]]; then
                 echo "$(( (size_bytes + 536870912) / 1073741824 ))GB"
             elif [[ $size_bytes -gt 1048576 ]]; then
@@ -92,16 +92,16 @@ format_size() {
     fi
 }
 
-# Función para obtener tamaño de directorio
+# Function to get directory size
 get_dir_size() {
     local dir="$1"
     
     if [[ "$OS" == "Windows" ]]; then
-        # En Windows, usar du si está disponible (Git Bash/WSL)
+        # On Windows, use du if available (Git Bash/WSL)
         if command -v du >/dev/null 2>&1; then
             du -sb "$dir" 2>/dev/null | cut -f1 || echo "0"
         else
-            # Fallback: usar PowerShell si está disponible
+            # Fallback: use PowerShell if available
             if command -v powershell.exe >/dev/null 2>&1; then
                 powershell.exe -Command "(Get-ChildItem -Path '$dir' -Recurse | Measure-Object -Property Length -Sum).Sum" 2>/dev/null || echo "0"
             else
@@ -109,7 +109,7 @@ get_dir_size() {
             fi
         fi
     else
-        # macOS y Linux
+        # macOS and Linux
         if command -v du >/dev/null 2>&1; then
             du -sb "$dir" 2>/dev/null | cut -f1 || echo "0"
         else
@@ -118,53 +118,53 @@ get_dir_size() {
     fi
 }
 
-# Función para buscar node_modules
+# Function to search for node_modules
 find_node_modules() {
     local search_dir="$1"
-    local max_depth="${2:-10}"  # Limitar profundidad para evitar bucles infinitos
+    local max_depth="${2:-10}"  # Limit depth to avoid infinite loops
     
-    echo -e "\n${BLUE}🔍 Buscando en: $search_dir${NC}"
+    echo -e "\n${BLUE}🔍 Searching in: $search_dir${NC}"
     
     if [[ ! -d "$search_dir" ]]; then
-        echo -e "${YELLOW}⚠️  Directorio no existe: $search_dir${NC}"
+        echo -e "${YELLOW}⚠️  Directory does not exist: $search_dir${NC}"
         return
     fi
     
-    # Buscar directorios node_modules
+    # Search for node_modules directories
     local find_args=()
     find_args+=("$search_dir")
     find_args+=("-maxdepth" "$max_depth")
     find_args+=("-name" "node_modules")
     find_args+=("-type" "d")
-    find_args+=("-not" "-path" "*/.*")  # Excluir directorios ocultos
+    find_args+=("-not" "-path" "*/.*")  # Exclude hidden directories
     
     if [[ "$OS" == "Windows" ]]; then
-        # En Windows, añadir filtros adicionales para evitar problemas
+        # On Windows, add additional filters to avoid problems
         find_args+=("-not" "-path" "*/System32/*")
         find_args+=("-not" "-path" "*/Windows/*")
     fi
     
-    # Ejecutar búsqueda con manejo de errores
+    # Execute search with error handling
     $FIND_CMD "${find_args[@]}" 2>/dev/null || true
 }
 
-# Mostrar ayuda si se solicita
+# Show help if requested
 if [[ "${1:-}" == "--help" ]] || [[ "${1:-}" == "-h" ]]; then
     echo -e "${BLUE}🧹 Node Modules Cleaner${NC}"
     echo ""
-    echo "Uso: $0 [opciones]"
+    echo "Usage: $0 [options]"
     echo ""
-    echo "Opciones:"
-    echo "  --dry-run    Solo mostrar qué se eliminaría, sin borrar"
-    echo "  --interactive Preguntar antes de eliminar cada directorio"
-    echo "  --path DIR   Buscar solo en el directorio especificado"
-    echo "  --help       Mostrar esta ayuda"
+    echo "Options:"
+    echo "  --dry-run    Only show what would be deleted, without removing"
+    echo "  --interactive Ask before deleting each directory"
+    echo "  --path DIR   Search only in the specified directory"
+    echo "  --help       Show this help"
     echo ""
-    echo "Ejemplos:"
-    echo "  $0                          # Búsqueda completa y eliminación"
-    echo "  $0 --dry-run               # Solo mostrar qué se encontró"
-    echo "  $0 --path ~/Projects       # Buscar solo en ~/Projects"
-    echo "  $0 --interactive           # Confirmar cada eliminación"
+    echo "Examples:"
+    echo "  $0                          # Complete search and deletion"
+    echo "  $0 --dry-run               # Only show what was found"
+    echo "  $0 --path ~/Projects       # Search only in ~/Projects"
+    echo "  $0 --interactive           # Confirm each deletion"
     exit 0
 fi
 
@@ -188,48 +188,48 @@ while [[ $# -gt 0 ]]; do
             shift 2
             ;;
         *)
-            echo -e "${RED}❌ Opción desconocida: $1${NC}"
-            echo "Usa --help para ver las opciones disponibles"
+            echo -e "${RED}❌ Unknown option: $1${NC}"
+            echo "Use --help to see available options"
             exit 1
             ;;
     esac
 done
 
-# Determinar directorios de búsqueda
+# Determine search directories
 if [[ -n "$CUSTOM_PATH" ]]; then
     if [[ -d "$CUSTOM_PATH" ]]; then
         search_dirs=("$CUSTOM_PATH")
-        echo -e "${BLUE}🎯 Búsqueda personalizada en: $CUSTOM_PATH${NC}"
+        echo -e "${BLUE}🎯 Custom search in: $CUSTOM_PATH${NC}"
     else
-        echo -e "${RED}❌ El directorio especificado no existe: $CUSTOM_PATH${NC}"
+        echo -e "${RED}❌ The specified directory does not exist: $CUSTOM_PATH${NC}"
         exit 1
     fi
 else
-    echo -e "${BLUE}🔍 Búsqueda completa en directorios estándar${NC}"
+    echo -e "${BLUE}🔍 Complete search in standard directories${NC}"
 fi
 
 if [[ "$DRY_RUN" == true ]]; then
-    echo -e "${YELLOW}🔍 MODO DRY-RUN: Solo mostrar, no eliminar${NC}"
+    echo -e "${YELLOW}🔍 DRY-RUN MODE: Only show, do not delete${NC}"
 fi
 
-# Array para almacenar directorios encontrados
+# Array to store found directories
 declare -a found_dirs=()
 declare -a dir_sizes=()
 total_size=0
 
-echo -e "\n${BLUE}🕵️ Iniciando búsqueda de directorios node_modules...${NC}"
+echo -e "\n${BLUE}🕵️ Starting search for node_modules directories...${NC}"
 
-# Buscar en cada directorio
+# Search in each directory
 for search_dir in "${search_dirs[@]}"; do
     if [[ -d "$search_dir" ]]; then
-        echo -e "\n${BLUE}📂 Explorando: $search_dir${NC}"
+        echo -e "\n${BLUE}📂 Exploring: $search_dir${NC}"
         
-        # Buscar node_modules con timeout para evitar colgarse
+        # Search for node_modules with timeout to avoid hanging
         if command -v timeout >/dev/null 2>&1; then
-            # Usar timeout si está disponible (Linux/macOS con coreutils)
+            # Use timeout if available (Linux/macOS with coreutils)
             node_modules_dirs=$(timeout 300 bash -c "find_node_modules '$search_dir'" 2>/dev/null || true)
         else
-            # Sin timeout en Windows/sistemas básicos
+            # Without timeout on Windows/basic systems
             node_modules_dirs=$(find_node_modules "$search_dir" 2>/dev/null || true)
         fi
         
@@ -238,35 +238,35 @@ for search_dir in "${search_dirs[@]}"; do
                 if [[ -n "$dir" && -d "$dir" ]]; then
                     found_dirs+=("$dir")
                     
-                    # Calcular tamaño
+                    # Calculate size
                     size=$(get_dir_size "$dir")
                     dir_sizes+=("$size")
                     total_size=$((total_size + size))
                     
-                    echo -e "  ${GREEN}📦 Encontrado: $dir${NC} ($(format_size "$size"))"
+                    echo -e "  ${GREEN}📦 Found: $dir${NC} ($(format_size "$size"))"
                 fi
             done <<< "$node_modules_dirs"
         fi
     else
-        echo -e "${YELLOW}⚠️  Saltando directorio inexistente: $search_dir${NC}"
+        echo -e "${YELLOW}⚠️  Skipping non-existent directory: $search_dir${NC}"
     fi
 done
 
-# Mostrar resumen
-echo -e "\n${BLUE}📊 Resumen de la búsqueda:${NC}"
+# Show summary
+echo -e "\n${BLUE}📊 Search summary:${NC}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo -e "${BLUE}📂 Directorios encontrados: ${#found_dirs[@]}${NC}"
-echo -e "${BLUE}💾 Espacio total ocupado: $(format_size "$total_size")${NC}"
+echo -e "${BLUE}📂 Directories found: ${#found_dirs[@]}${NC}"
+echo -e "${BLUE}💾 Total space occupied: $(format_size "$total_size")${NC}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 if [[ ${#found_dirs[@]} -eq 0 ]]; then
-    echo -e "\n${GREEN}✅ No se encontraron directorios node_modules para limpiar${NC}"
+    echo -e "\n${GREEN}✅ No node_modules directories found to clean${NC}"
     exit 0
 fi
 
-# Mostrar lista detallada si hay pocos directorios
+# Show detailed list if there are few directories
 if [[ ${#found_dirs[@]} -le 20 ]]; then
-    echo -e "\n${BLUE}📋 Lista detallada:${NC}"
+    echo -e "\n${BLUE}📋 Detailed list:${NC}"
     for i in "${!found_dirs[@]}"; do
         dir="${found_dirs[$i]}"
         size="${dir_sizes[$i]}"
@@ -275,103 +275,103 @@ if [[ ${#found_dirs[@]} -le 20 ]]; then
 fi
 
 if [[ "$DRY_RUN" == true ]]; then
-    echo -e "\n${YELLOW}🔍 DRY-RUN COMPLETADO: No se eliminó nada${NC}"
-    echo -e "${BLUE}💡 Para eliminar realmente, ejecuta sin --dry-run${NC}"
+    echo -e "\n${YELLOW}🔍 DRY-RUN COMPLETED: Nothing was deleted${NC}"
+    echo -e "${BLUE}💡 To currently delete, run without --dry-run${NC}"
     exit 0
 fi
 
-# Confirmar eliminación
-echo -e "\n${YELLOW}⚠️  ADVERTENCIA: Esta operación eliminará TODOS los directorios node_modules encontrados${NC}"
-echo -e "${YELLOW}⚠️  Esto liberará aproximadamente $(format_size "$total_size") de espacio${NC}"
+# Confirm deletion
+echo -e "\n${YELLOW}⚠️  WARNING: This operation will delete ALL found node_modules directories${NC}"
+echo -e "${YELLOW}⚠️  This will free approximately $(format_size "$total_size") of space${NC}"
 echo ""
-echo -e "${BLUE}¿Deseas continuar? [y/N]${NC}"
+echo -e "${BLUE}Do you want to continue? [y/N]${NC}"
 read -r confirm_response
 
 case "$confirm_response" in
     [yY])
-        echo -e "${GREEN}✅ Iniciando eliminación...${NC}"
+        echo -e "${GREEN}✅ Starting deletion...${NC}"
         ;;
     *)
-        echo -e "${YELLOW}❌ Operación cancelada${NC}"
+        echo -e "${YELLOW}❌ Operation cancelled${NC}"
         exit 0
         ;;
 esac
 
-# Eliminar directorios
+# Delete directories
 deleted_count=0
 deleted_size=0
 failed_count=0
 
-echo -e "\n${BLUE}🗑️  Eliminando directorios node_modules...${NC}"
+echo -e "\n${BLUE}🗑️  Removing node_modules directories...${NC}"
 
 for i in "${!found_dirs[@]}"; do
     dir="${found_dirs[$i]}"
     size="${dir_sizes[$i]}"
     
     if [[ "$INTERACTIVE" == true ]]; then
-        echo -e "\n${BLUE}¿Eliminar $dir ($(format_size "$size"))? [y/N/q]${NC}"
+        echo -e "\n${BLUE}Delete $dir ($(format_size "$size"))? [y/N/q]${NC}"
         read -r interactive_response
         
         case "$interactive_response" in
             [qQ])
-                echo -e "${YELLOW}❌ Operación cancelada por el usuario${NC}"
+                echo -e "${YELLOW}❌ Operation cancelled by user${NC}"
                 break
                 ;;
             [yY])
-                # Continuar con la eliminación
+                # Continue with deletion
                 ;;
             *)
-                echo -e "${BLUE}⏭️  Saltando $dir${NC}"
+                echo -e "${BLUE}⏭️  Skipping $dir${NC}"
                 continue
                 ;;
         esac
     fi
     
-    echo -e "  ${BLUE}[$((i+1))/${#found_dirs[@]}] Eliminando: $dir${NC}"
+    echo -e "  ${BLUE}[$((i+1))/${#found_dirs[@]}] Removing: $dir${NC}"
     
     if rm -rf "$dir" 2>/dev/null; then
-        echo -e "    ${GREEN}✅ Eliminado ($(format_size "$size"))${NC}"
+        echo -e "    ${GREEN}✅ Deleted ($(format_size "$size"))${NC}"
         deleted_count=$((deleted_count + 1))
         deleted_size=$((deleted_size + size))
     else
-        echo -e "    ${RED}❌ Error eliminando${NC}"
+        echo -e "    ${RED}❌ Error deleting${NC}"
         failed_count=$((failed_count + 1))
         
-        # Intentar con sudo en sistemas Unix si falla
+        # Try with sudo on Unix systems if it fails
         if [[ "$OS" != "Windows" ]] && command -v sudo >/dev/null 2>&1; then
-            echo -e "    ${YELLOW}🔑 Intentando con sudo...${NC}"
+            echo -e "    ${YELLOW}🔑 Trying with sudo...${NC}"
             if sudo rm -rf "$dir" 2>/dev/null; then
-                echo -e "    ${GREEN}✅ Eliminado con sudo ($(format_size "$size"))${NC}"
+                echo -e "    ${GREEN}✅ Deleted with sudo ($(format_size "$size"))${NC}"
                 deleted_count=$((deleted_count + 1))
                 deleted_size=$((deleted_size + size))
                 failed_count=$((failed_count - 1))
             else
-                echo -e "    ${RED}❌ Error incluso con sudo${NC}"
+                echo -e "    ${RED}❌ Error even with sudo${NC}"
             fi
         fi
     fi
 done
 
-# Mostrar resumen final
-echo -e "\n${GREEN}🎉 Limpieza completada!${NC}"
+# Show final summary
+echo -e "\n${GREEN}🎉 Cleanup completed!${NC}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo -e "${GREEN}✅ Directorios eliminados: $deleted_count${NC}"
-echo -e "${GREEN}💾 Espacio liberado: $(format_size "$deleted_size")${NC}"
+echo -e "${GREEN}✅ Directories deleted: $deleted_count${NC}"
+echo -e "${GREEN}💾 Space freed: $(format_size "$deleted_size")${NC}"
 
 if [[ $failed_count -gt 0 ]]; then
-    echo -e "${YELLOW}⚠️  Eliminaciones fallidas: $failed_count${NC}"
+    echo -e "${YELLOW}⚠️  Failed deletions: $failed_count${NC}"
 fi
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-# Sugerencias finales
-echo -e "\n${BLUE}💡 Sugerencias:${NC}"
-echo "  • Ejecuta 'npm install' en tus proyectos activos para restaurar dependencias"
-echo "  • Considera usar 'npm ci' para instalaciones más rápidas en CI/CD"
-echo "  • Para evitar acumulación futura, usa herramientas como 'npkill' regularmente"
+# Final suggestions
+echo -e "\n${BLUE}💡 Suggestions:${NC}"
+echo "  • Run 'npm install' in your active projects to restore dependencies"
+echo "  • Consider using 'npm ci' for faster installations in CI/CD"
+echo "  • To avoid future accumulation, use tools like 'npkill' regularly"
 
 if [[ "$OS" != "Windows" ]]; then
-    echo "  • En Unix: considera 'find ~ -name node_modules -type d -exec rm -rf {} +'"
+    echo "  • On Unix: consider 'find ~ -name node_modules -type d -exec rm -rf {} +'"
 fi
 
-echo -e "\n${GREEN}🚀 ¡Limpieza de node_modules completada exitosamente!${NC}"
+echo -e "\n${GREEN}🚀 Node modules cleanup completed successfully!${NC}"
