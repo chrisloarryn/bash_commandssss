@@ -43,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.3] - 2025-06-27
 
-### � Fixed
+### 🐛 Fixed
 - **fix(core)**: Fixed changelog-manager.sh to prevent corrupted emojis and duplicate separators
 
 ---
