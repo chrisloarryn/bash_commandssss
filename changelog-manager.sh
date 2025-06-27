@@ -22,7 +22,7 @@ VERSION_FILE=".version"
 VALID_TYPES=("feat" "fix" "docs" "style" "refactor" "perf" "test" "chore" "security")
 
 # Valid scopes for this project
-VALID_SCOPES=("core" "go" "node" "docs" "config" "ui" "install" "cleanup" "validation" "backup" "project")
+VALID_SCOPES=("core" "go" "node" "docs" "config" "ui" "install" "cleanup" "validation" "backup" "project" "deps" "perf")
 
 # Function to show help
 show_help() {
@@ -50,7 +50,7 @@ show_help() {
     echo ""
     echo "Valid scopes:"
     echo "  core, go, node, docs, config, ui, install,"
-    echo "  cleanup, validation, backup, project"
+    echo "  cleanup, validation, backup, project, deps, perf"
     echo ""
     echo "Examples:"
     echo "  $0 add feat go 'Support for Go 1.22'"

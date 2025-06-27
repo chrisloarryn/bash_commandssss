@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### 📝 Pending
-- Upcoming changes will appear here
+- **feat(go)**: Add gRPC project generator script with hexagonal architecture- **feat(deps)**: Added dependency-manager.sh for advanced dependency management and security audits- **feat(perf)**: Added performance-analyzer.sh for Go and Node.js performance analysis- Upcoming changes will appear here
 
 ---
 
